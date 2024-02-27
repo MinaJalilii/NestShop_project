@@ -1,0 +1,9 @@
+# Ignore media folder
+media/
+
+# Ignore virtual environment folder
+venv/
+
+# Ignore database files
+*.sqlite3
+*.db
