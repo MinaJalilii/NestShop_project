@@ -1,0 +1,20 @@
+{% for product_id, item in cart.items %}
+    <li class="product-row-{{ product_id }}">
+        <div class="shopping-cart-img">
+            <a href="{% url 'home:product-detail' item.pid %}"><img
+                    src="{{ item.image }}"/></a>
+        </div>
+        <div class="shopping-cart-title">
+            <h4>
+                <a href="{% url 'home:product-detail' item.pid %}">{{ item.title|slice:'0:19' }}</a>
+            </h4>
+            <h4><span><span
+                    class="new-product-quantity-{{ product_id }}">{{ item.quantity }}</span> × </span>$ {{ item.price }}
+            </h4>
+        </div>
+        <div class="shopping-cart-delete">
+            <a><i class="fi-rs-cross-small remove-from-cart"
+                  data-product-id="{{ product_id }}"></i></a>
+        </div>
+    </li>
+{% endfor %}
