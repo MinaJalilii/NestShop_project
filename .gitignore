@@ -9,3 +9,5 @@ venv/
 *.db
 
 .idea/
+# Ignore Python bytecode files
+__pycache__/
