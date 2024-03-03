@@ -77,8 +77,8 @@ class Product(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to=user_directory_path)
     description = models.TextField(null=True)
-    price = models.DecimalField(max_digits=9999999999, decimal_places=2)
-    old_price = models.DecimalField(max_digits=9999999999, decimal_places=2)
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
+    old_price = models.DecimalField(max_digits=1000, decimal_places=2)
     specifications = models.TextField(null=True, blank=True)
     type = models.CharField(max_length=100, default='Organic', null=True, blank=True)
     stock_count = models.CharField(max_length=100, default='10', null=True, blank=True)
@@ -122,7 +122,7 @@ class ProductImages(models.Model):
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=9999999999, decimal_places=2)
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
     paid_status = models.BooleanField(default=True)
     order_date = models.DateTimeField(auto_now_add=True)
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default='Processing')
@@ -138,8 +138,8 @@ class CartOrderItems(models.Model):
     item = models.CharField(max_length=200)
     image = models.CharField(max_length=200)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=9999999999, decimal_places=2)
-    total = models.DecimalField(max_digits=9999999999, decimal_places=2)
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
+    total = models.DecimalField(max_digits=1000, decimal_places=2)
 
     def order_image(self):
         return mark_safe('<img src="%s" width="50"  height="50" />' % self.image)
