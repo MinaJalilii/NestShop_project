@@ -26,5 +26,11 @@
       "src": "/(.*)",
       "dest": "Nest_shop/wsgi.py"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
