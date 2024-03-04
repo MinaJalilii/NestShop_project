@@ -1,5 +1,5 @@
 # Ignore media folder
-media/
+#media/
 
 # Ignore virtual environment folder
 venv/
