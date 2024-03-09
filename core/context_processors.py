@@ -9,8 +9,8 @@ def default(request):
     vendors = Vendor.objects.all()
     tags = Tag.objects.all()
     min_max_price = Product.objects.aggregate(Min("price"), Max("price"))
-    # min_price = min_max_price.get('price__min')
-    # max_price = min_max_price.get('price__max')
+    min_price = min_max_price.get('price__min')
+    max_price = min_max_price.get('price__max')
     cart_total_amount = 0
     if 'cart' in request.session:
         for product_id, item in request.session['cart'].items():
@@ -29,8 +29,8 @@ def default(request):
         'address': address,
         'vendors': vendors,
         'tags': tags,
-        # 'min_price': int(min_price) - 1,
-        # 'max_price': int(max_price) + 1,
+        'min_price': int(min_price) - 1,
+        'max_price': int(max_price) + 1,
         'min_max_price': min_max_price,
         'products': products,
         'cart_total_amount': float(cart_total_amount),
