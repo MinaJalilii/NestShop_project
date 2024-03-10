@@ -24,6 +24,7 @@ def default(request):
     except:
         wishlist = Wishlist.objects.filter(user__isnull=True)
     products = Product.objects.filter(product_status='published')
+    deal_products = Product.objects.filter(product_status='published', featured=True)
     return {
         'categories': categories,
         'address': address,
@@ -35,4 +36,5 @@ def default(request):
         'products': products,
         'cart_total_amount': float(cart_total_amount),
         'wishlist': wishlist,
+        'deal_products': deal_products,
     }
