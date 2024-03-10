@@ -77,4 +77,7 @@ urlpatterns = [
 
     # About Us
     path("about-us", about_us_view, name="about-us"),
+
+    # Blog List
+    path("blogs", blog_list_view, name="blog-list"),
 ]

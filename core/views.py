@@ -377,3 +377,7 @@ def remove_from_wishlist(request):
 
 def about_us_view(request):
     return render(request, 'core/about.html', {})
+
+
+def blog_list_view(request):
+    return render(request, 'core/blogs.html', {})
