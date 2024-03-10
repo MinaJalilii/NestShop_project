@@ -373,3 +373,7 @@ def remove_from_wishlist(request):
         'wishlist': wishlist.count(),
     }
     return JsonResponse(context)
+
+
+def about_us_view(request):
+    return render(request, 'core/about.html', {})

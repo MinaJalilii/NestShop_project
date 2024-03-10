@@ -75,4 +75,6 @@ urlpatterns = [
     # Remove from wishlist
     path("remove-from-wishlist", remove_from_wishlist, name="remove-from-wishlist"),
 
+    # About Us
+    path("about-us", about_us_view, name="about-us"),
 ]

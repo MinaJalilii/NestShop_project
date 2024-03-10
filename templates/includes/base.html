@@ -124,7 +124,7 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info">
                         <ul>
-                            <li><a href="page-about.htlm">About Us</a></li>
+                            <li><a href="{% url 'home:about-us' %}">About Us</a></li>
                             <li><a href="{% url 'home:dashboard' %}">My Account</a></li>
                             <li><a href="shop-wishlist.html">Wishlist</a></li>
                             <li><a href="shop-order.html">Order Tracking</a></li>
@@ -412,7 +412,7 @@
                                        href="{% url 'home:home' %}">Home</a>
                                 </li>
                                 <li>
-                                    <a href="page-about.html">About</a>
+                                    <a href="{% url 'home:about-us' %}">About</a>
                                 </li>
 
                                 <li>
@@ -514,7 +514,7 @@
                                 <li>
                                     <a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
-                                        <li><a href="page-about.html">About Us</a></li>
+                                        <li><a href="{% url 'home:about-us' %}">About Us</a></li>
                                         <li><a href="page-contact.html">Contact</a></li>
                                         <li><a href="{% url 'home:dashboard' %}">My Account</a></li>
                                         <li><a href="page-login.html">Login</a></li>
@@ -738,7 +738,7 @@
                         <li class="menu-item-has-children">
                             <a href="#">Pages</a>
                             <ul class="dropdown">
-                                <li><a href="page-about.html">About Us</a></li>
+                                <li><a href="{% url 'home:about-us' %}">About Us</a></li>
                                 <li><a href="page-contact.html">Contact</a></li>
                                 <li><a href="{% url 'home:dashboard' %}">My Account</a></li>
                                 <li><a href="page-login.html">Login</a></li>
@@ -894,7 +894,7 @@
                 <div class="col">
                     <div class="widget-about font-md mb-md-3 mb-lg-3 mb-xl-0">
                         <div class="logo mb-30">
-                            <a href="index.html" class="mb-15"><img src="{% static 'assets/imgs/theme/logo.svg' %}"
+                            <a href="{% url 'home:home' %}" class="mb-15"><img src="{% static 'assets/imgs/theme/logo.svg' %}"
                                                                     alt="logo"/></a>
                             <p class="font-lg text-heading">Awesome grocery store website template</p>
                         </div>
@@ -914,7 +914,7 @@
                 <div class="footer-link-widget col">
                     <h4 class="widget-title">Company</h4>
                     <ul class="footer-list mb-sm-5 mb-md-0">
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="{% url 'home:about-us' %}">About Us</a></li>
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms &amp; Conditions</a></li>
@@ -926,7 +926,7 @@
                 <div class="footer-link-widget col">
                     <h4 class="widget-title">Account</h4>
                     <ul class="footer-list mb-sm-5 mb-md-0">
-                        <li><a href="#">Sign In</a></li>
+                        <li><a href="{% url 'userauths:sign-in' %}">Sign In</a></li>
                         <li><a href="{% url 'home:cart' %}">View Cart</a></li>
                         <li><a href="#">My Wishlist</a></li>
                         <li><a href="#">Track My Order</a></li>
