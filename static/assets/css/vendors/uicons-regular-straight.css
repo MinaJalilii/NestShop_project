@@ -803,9 +803,9 @@ i[class^="fi-rs-"]:before, i[class*=" fi-rs-"]:before, span[class^="fi-rs-"]:bef
 .fi-rs-screen:before {
     content: "\f205";
 }
-.fi-rs-search-alt:before {
-    content: "\f206";
-}
+/*.fi-rs-search-alt:before {*/
+/*    content: "\f206";*/
+/*}*/
 .fi-rs-search:before {
     content: "\f207";
 }

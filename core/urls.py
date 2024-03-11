@@ -26,6 +26,7 @@ urlpatterns = [
 
     # Search
     path("search", search_view, name='search'),
+    path("vendor-search", vendor_search_view, name="vendor-search"),
 
     # Filter Products
     path("filter-products", filter_product, name='filter-product'),

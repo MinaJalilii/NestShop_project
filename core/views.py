@@ -381,3 +381,9 @@ def about_us_view(request):
 
 def blog_list_view(request):
     return render(request, 'core/blogs.html', {})
+
+
+def vendor_search_view(request):
+    query = request.GET.get('vendor-q')
+    vendors = Vendor.objects.filter(title__icontains=query).order_by('-date')
+    return render(request, 'core/vendor-search.html', {'vendors': vendors, 'query': query})

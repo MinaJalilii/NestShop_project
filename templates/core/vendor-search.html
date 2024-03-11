@@ -1,0 +1,247 @@
+{% extends 'includes/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'home:home' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> Vendors <span></span> search <span></span>{% if query %}{{ query }}{% else %}No Searched Item!{% endif %}
+                </div>
+            </div>
+        </div>
+        {#        <div class="page-header mt-30 mb-50">#}
+        {#            <div class="container">#}
+        {#                <div class="archive-header">#}
+        {#                    <div class="row align-items-center">#}
+        {#                        <div class="col-xl-9 text-end d-none d-xl-block">#}
+        {#                            <ul class="tags-list">#}
+        {#                                <li class="hover-up">#}
+        {#                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Cabbage</a>#}
+        {#                                </li>#}
+        {#                                <li class="hover-up active">#}
+        {#                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Broccoli</a>#}
+        {#                                </li>#}
+        {#                                <li class="hover-up">#}
+        {#                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Artichoke</a>#}
+        {#                                </li>#}
+        {#                                <li class="hover-up">#}
+        {#                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Celery</a>#}
+        {#                                </li>#}
+        {#                                <li class="hover-up mr-0">#}
+        {#                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Spinach</a>#}
+        {#                                </li>#}
+        {#                            </ul>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="container mb-30">
+            <div class="archive-header-2 text-center">
+                <div class="row">
+                    <hr>
+                    <div class="col-lg-5 mx-auto">
+                        <div class="sidebar-widget-2 widget_search mb-50">
+                            <div class="search-form">
+                                <form action="{% url 'home:vendor-search' %}" method="GET">
+                                    <input type="text" placeholder="Search vendors (by name)..." name="vendor-q"/>
+                                    <button type="submit"><i class="fi-rs-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p>We found <strong class="text-brand">{{ vendors.count }}</strong>
+                                item{{ vendors.count|pluralize }} for you!</p>
+                        </div>
+                        <div class="sort-by-product-area">
+                            <div class="sort-by-cover mr-10">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fi-rs-apps"></i>Show:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">50</a></li>
+                                        <li><a href="#">100</a></li>
+                                        <li><a href="#">150</a></li>
+                                        <li><a href="#">200</a></li>
+                                        <li><a href="#">All</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sort-by-cover">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">Featured</a></li>
+                                        <li><a href="#">Price: Low to High</a></li>
+                                        <li><a href="#">Price: High to Low</a></li>
+                                        <li><a href="#">Release Date</a></li>
+                                        <li><a href="#">Avg. Rating</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row vendor-grid">
+                        {% for vendor in vendors %}
+                            <div class="col-lg-6 col-md-6 col-12 col-sm-6">
+                                <div class="vendor-wrap style-2 mb-40">
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">Mall</span>
+                                    </div>
+                                    <div class="vendor-img-action-wrap">
+                                        <div class="vendor-img">
+                                            <a href="{% url 'home:vendor-detail' vendor.vid %}">
+                                                <img class="default-img" src="{{ vendor.image.url }}" alt=""/>
+                                            </a>
+                                        </div>
+                                        <div class="mt-10">
+                                            <span class="font-small total-product">{{ vendor.products.count }} product{{ vendor.products.count|pluralize }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="vendor-content-wrap">
+                                        <div class="mb-30">
+                                            <div class="product-category">
+                                                <span class="text-muted">Since {{ vendor.date.year }}</span>
+                                            </div>
+                                            <h4 class="mb-5"><a
+                                                    href="{% url 'home:vendor-detail' vendor.vid %}">{{ vendor.title }}</a>
+                                            </h4>
+                                            <div class="product-rate-cover">
+                                                <div class="product-rate d-inline-block">
+                                                    <div class="product-rating" style="width: 90%"></div>
+                                                </div>
+                                                <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                            </div>
+                                            <div class="vendor-info d-flex justify-content-between align-items-end mt-30">
+                                                <ul class="contact-infor text-muted">
+                                                    <li><img
+                                                            src="{% static 'assets/imgs/theme/icons/icon-location.svg' %}"
+                                                            alt=""/><strong>Address: </strong>
+                                                        <span> {{ vendor.address }}</span>
+                                                    </li>
+                                                    <li><img
+                                                            src="{% static 'assets/imgs/theme/icons/icon-contact.svg' %}"
+                                                            alt=""/><strong>Call
+                                                        Us:</strong><span> {{ vendor.contact }}</span></li>
+                                                </ul>
+                                                <a href="{% url 'home:vendor-detail' vendor.vid %}" class="btn btn-xs">Visit
+                                                    Store <i
+                                                            class="fi-rs-arrow-small-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!--product grid-->
+                    {#                    <div class="pagination-area mt-20 mb-20">#}
+                    {#                        <nav aria-label="Page navigation example">#}
+                    {#                            <ul class="pagination justify-content-start">#}
+                    {#                                <li class="page-item">#}
+                    {#                                    <a class="page-link" href="#"><i class="fi-rs-arrow-small-left"></i></a>#}
+                    {#                                </li>#}
+                    {#                                <li class="page-item"><a class="page-link" href="#">1</a></li>#}
+                    {#                                <li class="page-item active"><a class="page-link" href="#">2</a></li>#}
+                    {#                                <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+                    {#                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>#}
+                    {#                                <li class="page-item"><a class="page-link" href="#">6</a></li>#}
+                    {#                                <li class="page-item">#}
+                    {#                                    <a class="page-link" href="#"><i class="fi-rs-arrow-small-right"></i></a>#}
+                    {#                                </li>#}
+                    {#                            </ul>#}
+                    {#                        </nav>#}
+                    {#                    </div>#}
+                    <section class="section-padding pb-5">
+                        <div class="section-title">
+                            <h3 class="">Deals Of The Day</h3>
+                            <a class="show-all" href="shop-grid-right.html">
+                                All Deals
+                                <i class="fi-rs-angle-right"></i>
+                            </a>
+                        </div>
+                        <div class="row">
+                            {% for product in deal_products %}
+                                <div class="col-xl-3 col-lg-4 col-md-6">
+                                    <div class="product-cart-wrap style-2">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img">
+                                                <a href="{% url 'home:product-detail' product.pid %}">
+                                                    <img src="{{ product.image.url }}" alt=""/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="deals-countdown-wrap">
+                                                <div class="deals-countdown" data-countdown="2024/03/11"></div>
+                                            </div>
+                                            <div class="deals-content">
+                                                <h2>
+                                                    <a href="{% url 'home:product-detail' product.pid %}">{{ product.title }}</a>
+                                                </h2>
+                                                <div class="product-rate-cover">
+                                                    <div class="product-rate d-inline-block">
+                                                        <div class="product-rating" style="width: 90%"></div>
+                                                    </div>
+                                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                                </div>
+                                                <div>
+                                                <span class="font-small text-muted">By <a
+                                                        href="{% url 'home:vendor-detail' product.vendor.vid %}">{{ product.vendor.title }}</a></span>
+                                                </div>
+                                                <div class="product-card-bottom">
+                                                    <div class="product-price">
+                                                        <span>$</span> <span
+                                                            id="current-product-price-{{ product.id }}">{{ product.price }}</span>
+                                                        <span class="old-price">${{ product.old_price }}</span>
+                                                    </div>
+                                                    <div class="add-cart">
+                                                        <input type="hidden"
+                                                               class="product-quantity-{{ product.id }}"
+                                                               value="1"/>
+                                                        <input type="hidden" class="product-pid-{{ product.id }}"
+                                                               value="{{ product.pid }}"/>
+                                                        <input type="hidden" class="product-image-{{ product.id }}"
+                                                               value="{{ product.image.url }}"/>
+                                                        <input type="hidden" class="product-id-{{ product.id }}"
+                                                               value="{{ product.id }}"/>
+                                                        <input type="hidden" class="product-title-{{ product.id }}"
+                                                               value="{{ product.title }}"/>
+                                                        <a class="add my-add-to-cart"
+                                                           data-index="{{ product.id }}"><i
+                                                                class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    <!--End Deals-->
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}

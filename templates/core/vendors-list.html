@@ -5,7 +5,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <a href="{% url 'home:home' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
                     <span></span> Vendors List
                 </div>
             </div>
@@ -18,8 +18,8 @@
                         <div class="col-lg-5 mx-auto">
                             <div class="sidebar-widget-2 widget_search mb-50">
                                 <div class="search-form">
-                                    <form action="#">
-                                        <input type="text" placeholder="Search vendors (by name or ID)..."/>
+                                    <form action="{% url 'home:vendor-search' %}" method="GET">
+                                        <input type="text" placeholder="Search vendors (by name)..." name="vendor-q"/>
                                         <button type="submit"><i class="fi-rs-search"></i></button>
                                     </form>
                                 </div>
@@ -91,7 +91,7 @@
                                         </a>
                                     </div>
                                     <div class="mt-10">
-                                        <span class="font-small total-product">{{ vendors.count }} product{{ vendors.count|pluralize }}</span>
+                                        <span class="font-small total-product">{{ vendor.products.count }} product{{ vendor.products.count|pluralize }}</span>
                                     </div>
                                 </div>
                                 <div class="vendor-content-wrap">
