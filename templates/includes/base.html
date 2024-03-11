@@ -405,7 +405,7 @@
                         <nav>
                             <ul>
                                 <li class="hot-deals"><img src="{% static 'assets/imgs/theme/icons/icon-hot.svg' %}"
-                                                           alt="hot deals"/><a href="shop-grid-right.html">Deals</a>
+                                                           alt="hot deals"/><a href="{% url 'home:all-deals' %}">Deals</a>
                                 </li>
                                 <li>
                                     <a class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"

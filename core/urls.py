@@ -81,4 +81,7 @@ urlpatterns = [
 
     # Blog List
     path("blogs", blog_list_view, name="blog-list"),
+
+    # All Deals
+    path("all-deals", all_deals_view, name="all-deals"),
 ]
