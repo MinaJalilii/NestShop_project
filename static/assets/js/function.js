@@ -109,30 +109,28 @@ $(document).ready(function () {
         });
     });
     // Remove products from cart
-    $(".remove-from-cart").on("click", function remove(id) {
-        id.preventDefault();
-        let product_id = $(this).attr("data-product-id");
-        let this_val = $(this);
-        // let token = $('input[name=csrfmiddlewaretoken]').val();
+    $(document).on("click", ".remove-from-cart", function () {
+        var product_id = $(this).attr("data-product-id");
+        var this_val = $(this);
 
         $.ajax({
             url: '/delete-from-cart',
             data: {
                 'id': product_id,
-                // csrfmiddlewaretoken: token,
             },
-            datatype: 'json',
+            dataType: 'json',
             beforeSend: function () {
                 this_val.attr('disabled', true);
             },
             success: function (response) {
-                $('.my-total-items').html(response.total_items);
-                $('.mina-total-amount').html((response.cart_total_amount).toFixed(2));
+                $('.my-total-items').text(response.total_items);
+                $('.mina-total-amount').text(response.cart_total_amount.toFixed(2));
                 this_val.attr('disabled', false);
                 $('.product-row-' + product_id).remove();
             }
         });
     });
+
     // Updating quantity in cart page
     $(".update-cart").on("click", function () {
         let product_id = $(this).attr("data-product-id");
