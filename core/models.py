@@ -104,6 +104,9 @@ class Product(models.Model):
         new_price = (self.price * 100) / self.old_price
         return new_price
 
+    class Meta:
+        ordering = ('-date',)
+
 
 class ProductImages(models.Model):
     image = models.ImageField(upload_to='product-images')
