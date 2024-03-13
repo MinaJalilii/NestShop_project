@@ -101,8 +101,8 @@ class Product(models.Model):
         return self.title
 
     def get_percentage(self):
-        new_price = (self.price * 100) / self.old_price
-        return new_price
+        percentage_discount = ((self.old_price - self.price) / self.old_price) * 100
+        return percentage_discount
 
     class Meta:
         ordering = ('-date',)
