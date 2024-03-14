@@ -100,15 +100,23 @@ $(document).ready(function () {
             },
             datatype: 'json',
             success: function (response) {
-                this_val.html("✔")
+                if (this_val.hasClass("remove-from-cart")) {
+                    // Change button to Add
+                    this_val.html('<i class="fi-rs-shopping-cart mr-5"></i>Add');
+                    this_val.removeClass("remove remove-from-cart").addClass("add my-add-to-cart");
+                } else {
+                    // Change button to Trash
+                    this_val.html('<i class="fi-rs-trash mr-5" style="color: white;"></i>');
+                    this_val.removeClass("add my-add-to-cart").addClass("remove remove-from-cart");
+                }
                 $('#cart-items-count').text(response.total_items);
                 $('.new-product-added').html(response.context);
                 $('.mina-total-amount').html((response.cart_total_amount).toFixed(2));
-                // this_val.attr('disabled', false);
             }
         });
     });
-    // Remove products from cart
+
+// Remove products from cart
     $(document).on("click", ".remove-from-cart", function () {
         var product_id = $(this).attr("data-product-id");
         var this_val = $(this);
@@ -127,10 +135,13 @@ $(document).ready(function () {
                 $('.mina-total-amount').text(response.cart_total_amount.toFixed(2));
                 this_val.attr('disabled', false);
                 $('.product-row-' + product_id).remove();
+
+                // Change button to Add
+                this_val.html('<i class="fi-rs-shopping-cart mr-5"></i>Add');
+                this_val.removeClass("remove remove-from-cart").addClass("add my-add-to-cart");
             }
         });
     });
-
     // Updating quantity in cart page
     $(".update-cart").on("click", function () {
         let product_id = $(this).attr("data-product-id");

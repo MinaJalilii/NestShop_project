@@ -12828,3 +12828,22 @@ input[type="range"] {
 #tooSlider {
     z-index: 1;
 }
+
+.product-cart-wrap .product-card-bottom .add-cart .remove {
+    position: relative;
+    display: inline-block;
+    padding: 6px 20px 6px 20px;
+    border-radius: 4px;
+    background-color: #e35f5f;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.product-cart-wrap .product-card-bottom .add-cart .remove:hover {
+    background-color: #ba2121;
+    color: #fff;
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+    -webkit-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+}
