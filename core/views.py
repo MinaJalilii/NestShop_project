@@ -391,3 +391,7 @@ def vendor_search_view(request):
 
 def all_deals_view(request):
     return render(request, 'core/all-deals.html', {})
+
+
+def compare_products_view(request):
+    return render(request, 'core/products-compare.html', {})
