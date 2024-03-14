@@ -323,7 +323,7 @@ def empty_cart(request):
 
 def add_to_wishlist(request):
     product_id = request.GET.get('id')
-    product = Product.objects.get(id=product_id)
+    product = Product.objects.get(id=int(product_id))
     try:
         wishlist_count = Wishlist.objects.filter(product=product, user=request.user).count()
     except:
