@@ -88,12 +88,12 @@
                                     </div>
                                 </div>
                                 <div class="detail-extralink mb-30">
-{#                                    <div class="detail-qty border radius">#}
-                                        <input type="number" value="1" id="product-quantity-{{ product.id }}" min="1"
-                                               class="border-solid mb-20 product-quantity-{{ product.id }}"
-                                               name="quantity"
-                                               style="width: 90px;height: 50px;border-color: #3bb77e; color: #3bb77e;">
-{#                                    </div>#}
+                                    {#                                    <div class="detail-qty border radius">#}
+                                    <input type="number" value="1" id="product-quantity-{{ product.id }}" min="1"
+                                           class="border-solid mb-20 product-quantity-{{ product.id }}"
+                                           name="quantity"
+                                           style="width: 90px;height: 50px;border-color: #3bb77e; color: #3bb77e;">
+                                    {#                                    </div>#}
                                     <div class="product-extra-link2">
                                         <input type="hidden"
                                                class="product-quantity-{{ product.id }}"
@@ -254,10 +254,11 @@
                                 </form>
                             </div>
                             <div class="header-action-icon-2">
-                                <a href="shop-compare.html">
+                                <a href="{% url 'home:compare' %}">
                                     <img class="svgInject" alt="Nest"
                                          src="{% static 'assets/imgs/theme/icons/icon-compare.svg' %}"/>
-                                    <span class="pro-count blue">3</span>
+                                    <span class="pro-count blue compare-total-amount"
+                                          id="compare-items-count">{{ request.session.compare|length }}</span>
                                 </a>
                                 <a href="{% url 'home:compare' %}"><span class="lable ml-0">Compare</span></a>
                             </div>

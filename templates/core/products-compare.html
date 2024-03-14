@@ -20,131 +20,155 @@
                             <tbody>
                             <tr class="pr_image">
                                 <td class="text-muted font-sm fw-600 font-heading mw-200">Preview</td>
-                                <td class="row_img"><img src="{% static 'assets/imgs/shop/product-2-1.jpg' %}"
-                                                         alt="compare-img"/></td>
-                                <td class="row_img"><img src="{% static 'assets/imgs/shop/product-1-1.jpg' %}"
-                                                         alt="compare-img"/></td>
-                                <td class="row_img"><img src="{% static 'assets/imgs/shop/product-3-1.jpg' %}"
-                                                         alt="compare-img"/></td>
+                                {% for product_id, item in compare.items %}
+                                    <td class="row_img"><a href="{% url 'home:product-detail' item.pid %}"><img
+                                            src="{{ item.image }}"
+                                            alt="compare-img"/></a></td>
+                                {% endfor %}
                             </tr>
                             <tr class="pr_title">
                                 <td class="text-muted font-sm fw-600 font-heading">Name</td>
-                                <td class="product_name">
-                                    <h6><a href="shop-product-full.html" class="text-heading">J.Crew Mercantile Women's
-                                        Short</a></h6>
-                                </td>
-                                <td class="product_name">
-                                    <h6><a href="shop-product-full.html" class="text-heading">Amazon Essentials Women's
-                                        Tanks</a></h6>
-                                </td>
-                                <td class="product_name">
-                                    <h6><a href="shop-product-full.html" class="text-heading">Amazon Brand - Daily
-                                        Ritual Wom</a></h6>
-                                </td>
+                                {% for product_id, item in compare.items %}
+                                    <td class="product_name">
+                                        <h6><a href="{% url 'home:product-detail' item.pid %}"
+                                               class="text-heading">{{ item.title }}</a></h6>
+                                    </td>
+                                {% endfor %}
                             </tr>
                             <tr class="pr_price">
                                 <td class="text-muted font-sm fw-600 font-heading">Price</td>
-                                <td class="product_price">
-                                    <h4 class="price text-brand">$12.00</h4>
-                                </td>
-                                <td class="product_price">
-                                    <h4 class="price text-brand">$14.00</h4>
-                                </td>
-                                <td class="product_price">
-                                    <h4 class="price text-brand">$15.00</h4>
-                                </td>
+                                {% for product_id, item in compare.items %}
+                                    <td class="product_price">
+                                        <h4 class="price text-brand">${{ item.price }}</h4>
+                                    </td>
+                                {% endfor %}
                             </tr>
-                            <tr class="pr_rating">
-                                <td class="text-muted font-sm fw-600 font-heading">Rating</td>
-                                <td>
-                                    <div class="rating_wrap">
-                                        <div class="product-rate d-inline-block">
-                                            <div class="product-rating" style="width: 90%"></div>
-                                        </div>
-                                        <span class="rating_num">(121)</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="rating_wrap">
-                                        <div class="product-rate d-inline-block">
-                                            <div class="product-rating" style="width: 90%"></div>
-                                        </div>
-                                        <span class="rating_num">(35)</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="rating_wrap">
-                                        <div class="product-rate d-inline-block">
-                                            <div class="product-rating" style="width: 90%"></div>
-                                        </div>
-                                        <span class="rating_num">(125)</span>
-                                    </div>
-                                </td>
-                            </tr>
+                            {#                            <tr class="pr_rating">#}
+                            {#                                <td class="text-muted font-sm fw-600 font-heading">Rating</td>#}
+                            {#                                <td>#}
+                            {#                                    <div class="rating_wrap">#}
+                            {#                                        <div class="product-rate d-inline-block">#}
+                            {#                                            <div class="product-rating" style="width: 90%"></div>#}
+                            {#                                        </div>#}
+                            {#                                        <span class="rating_num">(121)</span>#}
+                            {#                                    </div>#}
+                            {#                                </td>#}
+                            {#                                <td>#}
+                            {#                                    <div class="rating_wrap">#}
+                            {#                                        <div class="product-rate d-inline-block">#}
+                            {#                                            <div class="product-rating" style="width: 90%"></div>#}
+                            {#                                        </div>#}
+                            {#                                        <span class="rating_num">(35)</span>#}
+                            {#                                    </div>#}
+                            {#                                </td>#}
+                            {#                                <td>#}
+                            {#                                    <div class="rating_wrap">#}
+                            {#                                        <div class="product-rate d-inline-block">#}
+                            {#                                            <div class="product-rating" style="width: 90%"></div>#}
+                            {#                                        </div>#}
+                            {#                                        <span class="rating_num">(125)</span>#}
+                            {#                                    </div>#}
+                            {#                                </td>#}
+                            {#                            </tr>#}
                             <tr class="description">
                                 <td class="text-muted font-sm fw-600 font-heading">Description</td>
-                                <td class="row_text font-xs">
-                                    <p class="font-sm text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                        typesetting industry. Lorem Ipsum has been the industry's standard dummy text
-                                        ever since the 1500s, when an unknown printer took a galley of type and</p>
-                                </td>
-                                <td class="row_text font-xs">
-                                    <p class="font-sm text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                        typesetting industry. Lorem Ipsum has been the industry's standard dummy text
-                                        ever since the 1500s, when an unknown printer took a galley of type and</p>
-                                </td>
-                                <td class="row_text font-xs">
-                                    <p class="font-sm text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                        typesetting industry. Lorem Ipsum has been the industry's standard dummy text
-                                        ever since the 1500s, when an unknown printer took a galley of type and</p>
-                                </td>
+                                {% for product_id, item in compare.items %}
+                                    <td class="row_text font-xs">
+                                        <p class="font-sm text-muted">{{ item.description }}</p>
+                                    </td>
+                                {% endfor %}
                             </tr>
                             <tr class="pr_stock">
                                 <td class="text-muted font-sm fw-600 font-heading">Stock status</td>
-                                <td class="row_stock"><span class="stock-status in-stock mb-0">In Stock</span></td>
-                                <td class="row_stock"><span class="stock-status out-stock mb-0">Out of stock</span></td>
-                                <td class="row_stock"><span class="stock-status in-stock mb-0">In Stock</span></td>
+                                {% for product_id, item in compare.items %}
+                                    {% if item.in_stock == 'True' %}
+                                        <td class="row_stock"><span class="stock-status in-stock mb-0">In Stock</span>
+                                        </td>
+                                    {% elif item.in_stock == "False" %}
+                                        <td class="row_stock">
+                                        <span class="stock-status out-stock mb-0">Out of stock</span>
+                                    {% endif %}
+                                {% endfor %}
+                                </td>
                             </tr>
-                            <tr class="pr_weight">
-                                <td class="text-muted font-sm fw-600 font-heading">Weight</td>
-                                <td class="row_weight">320 gram</td>
-                                <td class="row_weight">370 gram</td>
-                                <td class="row_weight">380 gram</td>
-                            </tr>
-                            <tr class="pr_dimensions">
-                                <td class="text-muted font-sm fw-600 font-heading">Dimensions</td>
-                                <td class="row_dimensions">N/A</td>
-                                <td class="row_dimensions">N/A</td>
-                                <td class="row_dimensions">N/A</td>
-                            </tr>
+                            {#                            <tr class="pr_weight">#}
+                            {#                                <td class="text-muted font-sm fw-600 font-heading">Weight</td>#}
+                            {#                                <td class="row_weight">320 gram</td>#}
+                            {#                                <td class="row_weight">370 gram</td>#}
+                            {#                                <td class="row_weight">380 gram</td>#}
+                            {#                            </tr>#}
+                            {#                            <tr class="pr_dimensions">#}
+                            {#                                <td class="text-muted font-sm fw-600 font-heading">Dimensions</td>#}
+                            {#                                <td class="row_dimensions">N/A</td>#}
+                            {#                                <td class="row_dimensions">N/A</td>#}
+                            {#                                <td class="row_dimensions">N/A</td>#}
+                            {#                            </tr>#}
                             <tr class="pr_add_to_cart">
                                 <td class="text-muted font-sm fw-600 font-heading">Buy now</td>
-                                <td class="row_btn">
-                                    <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart
-                                    </button>
-                                </td>
-                                <td class="row_btn">
-                                    <button class="btn btn-sm btn-secondary"><i class="fi-rs-headset mr-5"></i>Contact
-                                        Us
-                                    </button>
-                                </td>
-                                <td class="row_btn">
-                                    <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart
-                                    </button>
-                                </td>
+                                {% for product_id, item in compare.items %}
+                                    {% if item.in_stock == 'True' %}
+                                        <td class="row_btn">
+                                            <input type="hidden"
+                                                   class="product-quantity-{{ product_id }}"
+                                                   value="1"/>
+                                            <input type="hidden"
+                                                   class="product-pid-{{ product_id }}"
+                                                   value="{{ item.pid }}"/>
+                                            <input type="hidden"
+                                                   class="product-image-{{ product_id }}"
+                                                   value="{{ item.image }}"/>
+                                            <input type="hidden" class="product-id-{{ product_id }}"
+                                                   value="{{ product_id }}"/>
+                                            <input type="hidden"
+                                                   class="product-title-{{ product_id }}"
+                                                   value="{{ item.title }}"/>
+                                            <input type="hidden"
+                                                   class="product-in-stock-{{ product_id }}"
+                                                   value="{{ item.in_stock }}"/>
+                                            <input type="hidden"
+                                                   class="product-description-{{ product_id }}"
+                                                   value="{{ item.description }}"/>
+                                            <input type="hidden" id="current-product-price-{{ product_id }}"
+                                                   value="{{ item.price|floatformat }}">
+                                            {% if request.session.cart and product_id|stringformat:"s" in request.session.cart %}
+                                                <a class="remove remove-from-cart"
+                                                   data-index="{{ product_id }}"
+                                                   data-product-id="{{ product_id }}"><i
+                                                        class="fi-rs-trash mr-5"
+                                                        style="color: white;"></i></a>
+                                            {% else %}
+                                                <a class="btn btn-sm my-add-to-cart" data-index="{{ product_id }}"
+                                                   data-product-id="{{ product_id }}"><i
+                                                        class="fi-rs-shopping-bag mr-5"></i>Add to
+                                                    cart
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    {% elif item.in_stock == "False" %}
+                                        <td class="row_btn">
+                                            <a href="{% url 'userauths:contact-us' %}" class="btn btn-sm btn-secondary"><i
+                                                    class="fi-rs-headset mr-5"></i>Contact
+                                                Us
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
                             </tr>
                             <tr class="pr_remove text-muted">
                                 <td class="text-muted font-md fw-600"></td>
                                 <td class="row_remove">
-                                    <a href="#" class="text-muted"><i class="fi-rs-trash mr-5"></i><span>Remove</span>
+                                    <a href="#" class="text-muted"><i
+                                            class="fi-rs-trash mr-5"></i><span>Remove</span>
                                     </a>
                                 </td>
                                 <td class="row_remove">
-                                    <a href="#" class="text-muted"><i class="fi-rs-trash mr-5"></i><span>Remove</span>
+                                    <a href="#" class="text-muted"><i
+                                            class="fi-rs-trash mr-5"></i><span>Remove</span>
                                     </a>
                                 </td>
                                 <td class="row_remove">
-                                    <a href="#" class="text-muted"><i class="fi-rs-trash mr-5"></i><span>Remove</span>
+                                    <a href="#" class="text-muted"><i
+                                            class="fi-rs-trash mr-5"></i><span>Remove</span>
                                     </a>
                                 </td>
                             </tr>

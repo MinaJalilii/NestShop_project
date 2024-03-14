@@ -10,6 +10,7 @@ urlpatterns = [
     path("products", product_list_view, name='product-list'),
     path("product/<pid>", product_detail_view, name="product-detail"),
     path("compare", compare_products_view, name="compare"),
+    path("add-to-compare", add_to_compare, name="add-to-compare"),
 
     # Categories
     path("categories", category_list_view, name='category-list'),

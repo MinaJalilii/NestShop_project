@@ -268,6 +268,38 @@ $(document).ready(function () {
             }
         });
     });
+
+    // add to compare
+    $(".add-to-compare").on("click", function (event) {
+        event.preventDefault();
+        let this_val = $(this);
+        let _index = this_val.attr("data-index");
+        let product_id = $(".product-id-" + _index).val();
+        let product_image = $(".product-image-" + _index).val();
+        let product_title = $(".product-title-" + _index).val();
+        let product_pid = $(".product-pid-" + _index).val();
+        let product_price = $("#current-product-price-" + _index).text();
+        let product_in_stock = $(".product-in-stock-" + _index).val();
+        let product_description = $(".product-description-" + _index).val();
+
+        $.ajax({
+            url: '/add-to-compare',
+            data: {
+                'title': product_title,
+                'id': product_id,
+                'price': product_price,
+                'pid': product_pid,
+                'image': product_image,
+                'in_stock': product_in_stock,
+                'description': product_description,
+            },
+            datatype: 'json',
+            success: function (response) {
+                this_val.html("✔");
+                $('#compare-items-count').text(response.total_items);
+            }
+        });
+    });
 });
 
 

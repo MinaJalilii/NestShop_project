@@ -6,7 +6,11 @@
         </div>
         <div class="shopping-cart-title">
             <h4>
-                <a href="{% url 'home:product-detail' item.pid %}">{{ item.title|slice:'0:19' }}</a>
+                {% if item.title|length <= 17 %}
+                    <a href="{% url 'home:product-detail' item.pid %}">{{ item.title }}</a>
+                {% elif item.title|length > 17 %}
+                    <a style="font-size: 13px;" href="{% url 'home:product-detail' item.pid %}">{{ item.title }}</a>
+                {% endif %}
             </h4>
             <h4><span><span
                     class="new-product-quantity-{{ product_id }}">{{ item.quantity }}</span> × </span>$ {{ item.price }}

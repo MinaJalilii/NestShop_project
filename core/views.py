@@ -394,4 +394,38 @@ def all_deals_view(request):
 
 
 def compare_products_view(request):
-    return render(request, 'core/products-compare.html', {})
+    if 'compare' in request.session:
+        return render(request, 'core/products-compare.html',
+                      {'compare': request.session['compare'],
+                       'total_items': len(request.session['compare'])})
+    else:
+        return render(request, 'core/products-compare.html', {})
+
+
+def add_to_compare(request):
+    compare_product = {}
+    compare_product[str(request.GET.get('id'))] = {
+        'title': request.GET.get('title'),
+        'price': request.GET.get('price'),
+        'pid': request.GET.get('pid'),
+        'image': request.GET.get('image'),
+        'in_stock': request.GET.get('in_stock'),
+        'description': request.GET.get('description'),
+    }
+    if 'compare' in request.session:
+        if str(request.GET.get('id')) in request.session['compare']:
+            cart_data = request.session['compare']
+            cart_data.update(cart_data)
+            request.session['compare'] = cart_data
+        else:
+            cart_data = request.session['compare']
+            cart_data.update(compare_product)
+            request.session['compare'] = cart_data
+    else:
+        request.session['compare'] = compare_product
+    print(compare_product)
+    print(request.session['compare'])
+    return JsonResponse({
+        'data': request.session['compare'],
+        'total_items': len(request.session['compare']),
+    })

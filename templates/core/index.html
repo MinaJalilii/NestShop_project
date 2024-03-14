@@ -106,8 +106,8 @@
                                                     <div class="product-action-1">
                                                         <a aria-label="Add To Wishlist" class="action-btn"
                                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn"
-                                                           href="shop-compare.html"><i
+                                                        <a aria-label="Compare" class="action-btn add-to-compare" data-index="{{ product.id }}"
+                                                           href="{% url 'home:add-to-compare' %}"><i
                                                                 class="fi-rs-shuffle"></i></a>
                                                         <a aria-label="Quick view" class="action-btn"
                                                            data-bs-toggle="modal"
@@ -156,6 +156,12 @@
                                                             <input type="hidden"
                                                                    class="product-title-{{ product.id }}"
                                                                    value="{{ product.title }}"/>
+                                                            <input type="hidden"
+                                                                   class="product-in-stock-{{ product.id }}"
+                                                                   value="{{ product.in_stock }}"/>
+                                                            <input type="hidden"
+                                                                   class="product-description-{{ product.id }}"
+                                                                   value="{{ product.description }}"/>
                                                             {% if request.session.cart and product.id|stringformat:"s" in request.session.cart %}
                                                                 <a class="remove remove-from-cart"
                                                                    data-index="{{ product.id }}"
