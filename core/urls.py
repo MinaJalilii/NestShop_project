@@ -11,6 +11,7 @@ urlpatterns = [
     path("product/<pid>", product_detail_view, name="product-detail"),
     path("compare", compare_products_view, name="compare"),
     path("add-to-compare", add_to_compare, name="add-to-compare"),
+    path("delete-from-compare", delete_product_from_compare, name="delete-from-compare"),
 
     # Categories
     path("categories", category_list_view, name='category-list'),

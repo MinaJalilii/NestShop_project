@@ -116,7 +116,7 @@ $(document).ready(function () {
         });
     });
 
-// Remove products from cart
+    // Remove products from cart
     $(document).on("click", ".remove-from-cart", function () {
         var product_id = $(this).attr("data-product-id");
         var this_val = $(this);
@@ -297,6 +297,34 @@ $(document).ready(function () {
             success: function (response) {
                 this_val.html("✔");
                 $('#compare-items-count').text(response.total_items);
+            }
+        });
+    });
+    // Remove products from compare
+    $(document).on("click", ".remove-from-compare", function () {
+        let product_id = $(this).attr("data-product-id");
+        let this_val = $(this);
+
+        $.ajax({
+            url: '/delete-from-compare',
+            data: {
+                'id': product_id,
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                this_val.attr('disabled', true);
+            },
+            success: function (response) {
+                $('#compare-items-count').text(response.total_items);
+                $('.my-total-items').text(response.total_items);
+                this_val.attr('disabled', false);
+                $('.image-row-' + product_id).remove();
+                $('.title-row-' + product_id).remove();
+                $('.price-row-' + product_id).remove();
+                $('.des-row-' + product_id).remove();
+                $('.stock-row-' + product_id).remove();
+                $('.add-row-' + product_id).remove();
+                $('.remove-row-' + product_id).remove();
             }
         });
     });

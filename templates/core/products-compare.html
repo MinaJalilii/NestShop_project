@@ -14,167 +14,170 @@
             <div class="row">
                 <div class="col-xl-10 col-lg-12 m-auto">
                     <h1 class="heading-2 mb-10">Products Compare</h1>
-                    <h6 class="text-body mb-40">There are <span class="text-brand">3</span> products to compare</h6>
-                    <div class="table-responsive">
-                        <table class="table text-center table-compare">
-                            <tbody>
-                            <tr class="pr_image">
-                                <td class="text-muted font-sm fw-600 font-heading mw-200">Preview</td>
-                                {% for product_id, item in compare.items %}
-                                    <td class="row_img"><a href="{% url 'home:product-detail' item.pid %}"><img
-                                            src="{{ item.image }}"
-                                            alt="compare-img"/></a></td>
-                                {% endfor %}
-                            </tr>
-                            <tr class="pr_title">
-                                <td class="text-muted font-sm fw-600 font-heading">Name</td>
-                                {% for product_id, item in compare.items %}
-                                    <td class="product_name">
-                                        <h6><a href="{% url 'home:product-detail' item.pid %}"
-                                               class="text-heading">{{ item.title }}</a></h6>
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                            <tr class="pr_price">
-                                <td class="text-muted font-sm fw-600 font-heading">Price</td>
-                                {% for product_id, item in compare.items %}
-                                    <td class="product_price">
-                                        <h4 class="price text-brand">${{ item.price }}</h4>
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                            {#                            <tr class="pr_rating">#}
-                            {#                                <td class="text-muted font-sm fw-600 font-heading">Rating</td>#}
-                            {#                                <td>#}
-                            {#                                    <div class="rating_wrap">#}
-                            {#                                        <div class="product-rate d-inline-block">#}
-                            {#                                            <div class="product-rating" style="width: 90%"></div>#}
-                            {#                                        </div>#}
-                            {#                                        <span class="rating_num">(121)</span>#}
-                            {#                                    </div>#}
-                            {#                                </td>#}
-                            {#                                <td>#}
-                            {#                                    <div class="rating_wrap">#}
-                            {#                                        <div class="product-rate d-inline-block">#}
-                            {#                                            <div class="product-rating" style="width: 90%"></div>#}
-                            {#                                        </div>#}
-                            {#                                        <span class="rating_num">(35)</span>#}
-                            {#                                    </div>#}
-                            {#                                </td>#}
-                            {#                                <td>#}
-                            {#                                    <div class="rating_wrap">#}
-                            {#                                        <div class="product-rate d-inline-block">#}
-                            {#                                            <div class="product-rating" style="width: 90%"></div>#}
-                            {#                                        </div>#}
-                            {#                                        <span class="rating_num">(125)</span>#}
-                            {#                                    </div>#}
-                            {#                                </td>#}
-                            {#                            </tr>#}
-                            <tr class="description">
-                                <td class="text-muted font-sm fw-600 font-heading">Description</td>
-                                {% for product_id, item in compare.items %}
-                                    <td class="row_text font-xs">
-                                        <p class="font-sm text-muted">{{ item.description }}</p>
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                            <tr class="pr_stock">
-                                <td class="text-muted font-sm fw-600 font-heading">Stock status</td>
-                                {% for product_id, item in compare.items %}
-                                    {% if item.in_stock == 'True' %}
-                                        <td class="row_stock"><span class="stock-status in-stock mb-0">In Stock</span>
+                    <h6 class="text-body mb-40">There are <span
+                            class="text-brand my-total-items">{{ total_items }}</span> products to compare</h6>
+                    <div class="cart-action d-flex justify-content-between">
+                        <a class="btn " href="{% url 'home:product-list' %}"><i class="fi-rs-arrow-left mr-10"></i>Continue
+                            Shopping</a>
+                    </div>
+                    {% if compare.items %}
+                        <div class="table-responsive">
+                            <table class="table text-center table-compare">
+                                <tbody>
+                                <tr class="pr_image">
+                                    <td class="text-muted font-sm fw-600 font-heading mw-200">Preview</td>
+                                    {% for product_id, item in compare.items %}
+                                        <td class="row_img image-row-{{ product_id }}"><a
+                                                href="{% url 'home:product-detail' item.pid %}"><img
+                                                src="{{ item.image }}"
+                                                alt="compare-img"/></a></td>
+                                    {% endfor %}
+                                </tr>
+                                <tr class="pr_title">
+                                    <td class="text-muted font-sm fw-600 font-heading">Name</td>
+                                    {% for product_id, item in compare.items %}
+                                        <td class="product_name title-row-{{ product_id }}">
+                                            <h6><a href="{% url 'home:product-detail' item.pid %}"
+                                                   class="text-heading">{{ item.title }}</a></h6>
                                         </td>
-                                    {% elif item.in_stock == "False" %}
-                                        <td class="row_stock">
-                                        <span class="stock-status out-stock mb-0">Out of stock</span>
-                                    {% endif %}
-                                {% endfor %}
-                                </td>
-                            </tr>
-                            {#                            <tr class="pr_weight">#}
-                            {#                                <td class="text-muted font-sm fw-600 font-heading">Weight</td>#}
-                            {#                                <td class="row_weight">320 gram</td>#}
-                            {#                                <td class="row_weight">370 gram</td>#}
-                            {#                                <td class="row_weight">380 gram</td>#}
-                            {#                            </tr>#}
-                            {#                            <tr class="pr_dimensions">#}
-                            {#                                <td class="text-muted font-sm fw-600 font-heading">Dimensions</td>#}
-                            {#                                <td class="row_dimensions">N/A</td>#}
-                            {#                                <td class="row_dimensions">N/A</td>#}
-                            {#                                <td class="row_dimensions">N/A</td>#}
-                            {#                            </tr>#}
-                            <tr class="pr_add_to_cart">
-                                <td class="text-muted font-sm fw-600 font-heading">Buy now</td>
-                                {% for product_id, item in compare.items %}
-                                    {% if item.in_stock == 'True' %}
-                                        <td class="row_btn">
-                                            <input type="hidden"
-                                                   class="product-quantity-{{ product_id }}"
-                                                   value="1"/>
-                                            <input type="hidden"
-                                                   class="product-pid-{{ product_id }}"
-                                                   value="{{ item.pid }}"/>
-                                            <input type="hidden"
-                                                   class="product-image-{{ product_id }}"
-                                                   value="{{ item.image }}"/>
-                                            <input type="hidden" class="product-id-{{ product_id }}"
-                                                   value="{{ product_id }}"/>
-                                            <input type="hidden"
-                                                   class="product-title-{{ product_id }}"
-                                                   value="{{ item.title }}"/>
-                                            <input type="hidden"
-                                                   class="product-in-stock-{{ product_id }}"
-                                                   value="{{ item.in_stock }}"/>
-                                            <input type="hidden"
-                                                   class="product-description-{{ product_id }}"
-                                                   value="{{ item.description }}"/>
-                                            <input type="hidden" id="current-product-price-{{ product_id }}"
-                                                   value="{{ item.price|floatformat }}">
-                                            {% if request.session.cart and product_id|stringformat:"s" in request.session.cart %}
-                                                <a class="remove remove-from-cart"
-                                                   data-index="{{ product_id }}"
-                                                   data-product-id="{{ product_id }}"><i
-                                                        class="fi-rs-trash mr-5"
-                                                        style="color: white;"></i></a>
-                                            {% else %}
-                                                <a class="btn btn-sm my-add-to-cart" data-index="{{ product_id }}"
-                                                   data-product-id="{{ product_id }}"><i
-                                                        class="fi-rs-shopping-bag mr-5"></i>Add to
-                                                    cart
+                                    {% endfor %}
+                                </tr>
+                                <tr class="pr_price">
+                                    <td class="text-muted font-sm fw-600 font-heading">Price</td>
+                                    {% for product_id, item in compare.items %}
+                                        <td class="product_price price-row-{{ product_id }}">
+                                            <h4 class="price text-brand">${{ item.price }}</h4>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                {#                            <tr class="pr_rating">#}
+                                {#                                <td class="text-muted font-sm fw-600 font-heading">Rating</td>#}
+                                {#                                <td>#}
+                                {#                                    <div class="rating_wrap">#}
+                                {#                                        <div class="product-rate d-inline-block">#}
+                                {#                                            <div class="product-rating" style="width: 90%"></div>#}
+                                {#                                        </div>#}
+                                {#                                        <span class="rating_num">(121)</span>#}
+                                {#                                    </div>#}
+                                {#                                </td>#}
+                                {#                                <td>#}
+                                {#                                    <div class="rating_wrap">#}
+                                {#                                        <div class="product-rate d-inline-block">#}
+                                {#                                            <div class="product-rating" style="width: 90%"></div>#}
+                                {#                                        </div>#}
+                                {#                                        <span class="rating_num">(35)</span>#}
+                                {#                                    </div>#}
+                                {#                                </td>#}
+                                {#                                <td>#}
+                                {#                                    <div class="rating_wrap">#}
+                                {#                                        <div class="product-rate d-inline-block">#}
+                                {#                                            <div class="product-rating" style="width: 90%"></div>#}
+                                {#                                        </div>#}
+                                {#                                        <span class="rating_num">(125)</span>#}
+                                {#                                    </div>#}
+                                {#                                </td>#}
+                                {#                            </tr>#}
+                                <tr class="description">
+                                    <td class="text-muted font-sm fw-600 font-heading">Description</td>
+                                    {% for product_id, item in compare.items %}
+                                        <td class="row_text font-xs des-row-{{ product_id }}">
+                                            <p class="font-sm text-muted">{{ item.description }}</p>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr class="pr_stock">
+                                    <td class="text-muted font-sm fw-600 font-heading">Stock status</td>
+                                    {% for product_id, item in compare.items %}
+                                        {% if item.in_stock == 'True' %}
+                                            <td class="row_stock stock-row-{{ product_id }}"><span
+                                                    class="stock-status in-stock mb-0">In Stock</span>
+                                            </td>
+                                        {% elif item.in_stock == "False" %}
+                                            <td class="row_stock stock-row-{{ product_id }}">
+                                            <span class="stock-status out-stock mb-0">Out of stock</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </td>
+                                </tr>
+                                {#                            <tr class="pr_weight">#}
+                                {#                                <td class="text-muted font-sm fw-600 font-heading">Weight</td>#}
+                                {#                                <td class="row_weight">320 gram</td>#}
+                                {#                                <td class="row_weight">370 gram</td>#}
+                                {#                                <td class="row_weight">380 gram</td>#}
+                                {#                            </tr>#}
+                                {#                            <tr class="pr_dimensions">#}
+                                {#                                <td class="text-muted font-sm fw-600 font-heading">Dimensions</td>#}
+                                {#                                <td class="row_dimensions">N/A</td>#}
+                                {#                                <td class="row_dimensions">N/A</td>#}
+                                {#                                <td class="row_dimensions">N/A</td>#}
+                                {#                            </tr>#}
+                                <tr class="pr_add_to_cart">
+                                    <td class="text-muted font-sm fw-600 font-heading">Buy now</td>
+                                    {% for product_id, item in compare.items %}
+                                        {% if item.in_stock == 'True' %}
+                                            <td class="row_btn add-row-{{ product_id }}">
+                                                <input type="hidden"
+                                                       class="product-quantity-{{ product_id }}"
+                                                       value="1"/>
+                                                <input type="hidden"
+                                                       class="product-pid-{{ product_id }}"
+                                                       value="{{ item.pid }}"/>
+                                                <input type="hidden"
+                                                       class="product-image-{{ product_id }}"
+                                                       value="{{ item.image }}"/>
+                                                <input type="hidden" class="product-id-{{ product_id }}"
+                                                       value="{{ product_id }}"/>
+                                                <input type="hidden"
+                                                       class="product-title-{{ product_id }}"
+                                                       value="{{ item.title }}"/>
+                                                <input type="hidden"
+                                                       class="product-in-stock-{{ product_id }}"
+                                                       value="{{ item.in_stock }}"/>
+                                                <input type="hidden"
+                                                       class="product-description-{{ product_id }}"
+                                                       value="{{ item.description }}"/>
+                                                <input type="hidden" id="current-product-price-{{ product_id }}"
+                                                       value="{{ item.price|floatformat }}">
+                                                {% if request.session.cart and product_id|stringformat:"s" in request.session.cart %}
+                                                    <a class="remove remove-from-cart"
+                                                       data-index="{{ product_id }}"
+                                                       data-product-id="{{ product_id }}"><i
+                                                            class="fi-rs-trash mr-5"
+                                                            style="color: white;"></i></a>
+                                                {% else %}
+                                                    <a class="btn btn-sm my-add-to-cart" data-index="{{ product_id }}"
+                                                       data-product-id="{{ product_id }}"><i
+                                                            class="fi-rs-shopping-bag mr-5"></i>Add to
+                                                        cart
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        {% elif item.in_stock == "False" %}
+                                            <td class="row_btn add-row-{{ product_id }}">
+                                                <a href="{% url 'userauths:contact-us' %}"
+                                                   class="btn btn-sm btn-secondary"><i
+                                                        class="fi-rs-headset mr-5"></i>Contact
+                                                    Us
                                                 </a>
-                                            {% endif %}
-                                        </td>
-                                    {% elif item.in_stock == "False" %}
-                                        <td class="row_btn">
-                                            <a href="{% url 'userauths:contact-us' %}" class="btn btn-sm btn-secondary"><i
-                                                    class="fi-rs-headset mr-5"></i>Contact
-                                                Us
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                <tr class="pr_remove text-muted">
+                                    <td class="text-muted font-md fw-600"></td>
+                                    {% for product_id ,item in compare.items %}
+                                        <td class="row_remove remove-row-{{ product_id }}">
+                                            <a class="text-muted remove-from-compare"
+                                               data-product-id="{{ product_id }}"><i
+                                                    class="fi-rs-trash mr-5"></i><span>Remove</span>
                                             </a>
                                         </td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                            <tr class="pr_remove text-muted">
-                                <td class="text-muted font-md fw-600"></td>
-                                <td class="row_remove">
-                                    <a href="#" class="text-muted"><i
-                                            class="fi-rs-trash mr-5"></i><span>Remove</span>
-                                    </a>
-                                </td>
-                                <td class="row_remove">
-                                    <a href="#" class="text-muted"><i
-                                            class="fi-rs-trash mr-5"></i><span>Remove</span>
-                                    </a>
-                                </td>
-                                <td class="row_remove">
-                                    <a href="#" class="text-muted"><i
-                                            class="fi-rs-trash mr-5"></i><span>Remove</span>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    {% endfor %}
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

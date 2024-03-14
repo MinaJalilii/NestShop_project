@@ -429,3 +429,18 @@ def add_to_compare(request):
         'data': request.session['compare'],
         'total_items': len(request.session['compare']),
     })
+
+
+def delete_product_from_compare(request):
+    product_id = str(request.GET.get('id'))
+    if 'compare' in request.session:
+        if product_id in request.session['compare']:
+            del request.session['compare'][product_id]
+            request.session.modified = True
+    # context = render_to_string('core/async/cart-list.html', {'cart': request.session['cart'],
+    #                                                          'total_items': len(request.session['cart']),
+    #                                                          'cart_total_amount': cart_total_amount})
+    return JsonResponse({
+        # 'mydata': context,
+        'total_items': len(request.session['compare']),
+    })
