@@ -148,7 +148,7 @@
                         <ul>
                             <li><a href="{% url 'home:about-us' %}">About Us</a></li>
                             <li><a href="{% url 'home:dashboard' %}">My Account</a></li>
-                            <li><a href="shop-wishlist.html">Wishlist</a></li>
+                            <li><a href="{% url 'home:wishlist' %}">Wishlist</a></li>
                             <li><a href="shop-order.html">Order Tracking</a></li>
                         </ul>
                     </div>
@@ -209,7 +209,8 @@
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="index.html"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo"/></a>
+                    <a href="{% url 'home:home' %}"><img src="{% static 'assets/imgs/theme/logo.svg' %}"
+                                                         alt="logo"/></a>
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
@@ -288,7 +289,7 @@
                                                 </div>
                                                 <div class="shopping-cart-title">
                                                     <h4>
-                                                        <a href="{% url 'home:product-detail' item.pid %}">{{ item.title|slice:'0:19' }}</a>
+                                                        <a href="{% url 'home:product-detail' item.pid %}">{{ item.title }}</a>
                                                     </h4>
                                                     <h4><span><span
                                                             class="new-product-quantity-{{ product_id }}">{{ item.quantity }}</span> × </span>$ {{ item.price }}
@@ -341,9 +342,9 @@
                                                 class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a></li>
                                         <li><a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My
                                             Voucher</a></li>
-                                        <li><a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My
+                                        <li><a href="{% url 'home:wishlist' %}"><i class="fi fi-rs-heart mr-10"></i>My
                                             Wishlist</a></li>
-                                        <li><a href="page-account.html"><i
+                                        <li><a href="{% url 'userauths:edit-profile' %}"><i
                                                 class="fi fi-rs-settings-sliders mr-10"></i>Setting</a></li>
                                         {% if request.user.is_authenticated %}
                                             <li><a href="{% url 'userauths:sign-out' %}"><i
@@ -362,7 +363,8 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo"/></a>
+                    <a href="{% url 'home:home' %}"><img src="{% static 'assets/imgs/theme/logo.svg' %}"
+                                                         alt="logo"/></a>
                 </div>
                 <div class="header-nav d-none d-lg-flex">
                     <div class="main-categori-wrap d-none d-lg-block">
@@ -572,23 +574,32 @@
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 <ul>
                                     <!-- Mobile cart items -->
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest"
-                                                                                   src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}"/></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
-                                            <h3><span>1 × </span>$800.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
+                                    {% for product_id, item in request.session.cart.items %}
+                                        <li class="product-row-{{ product_id }}">
+                                            <div class="shopping-cart-img">
+                                                <a href="{% url 'home:product-detail' item.pid %}"><img alt="Nest"
+                                                                                                        src="{{ item.image }}"/></a>
+                                            </div>
+                                            <div class="shopping-cart-title">
+                                                <h4>
+                                                    <a href="{% url 'home:product-detail' item.pid %}">{{ item.title }}</a>
+                                                </h4>
+                                                <h3><span><span
+                                                        class="new-product-quantity-{{ product_id }}">{{ item.quantity }}</span>  × </span>$ {{ item.price }}
+                                                </h3>
+                                            </div>
+                                            <div class="shopping-cart-delete">
+                                                <a><i class="fi-rs-cross-small remove-from-cart"
+                                                      data-product-id="{{ product_id }}"></i></a>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>$383.00</span></h4>
+                                        <h4>Total <span>$</span> <span
+                                                class="mina-total-amount">{{ cart_total_amount|floatformat:2 }}</span>
+                                        </h4>
                                     </div>
                                     <div class="shopping-cart-button">
                                         <a href="{% url 'home:cart' %}">View cart</a>
@@ -619,7 +630,7 @@
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="index.html"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo"/></a>
+                <a href="{% url 'home:home' %}"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo"/></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -630,7 +641,7 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="#">
+                <form action="{% url 'home:search' %}" method="GET">
                     <input type="search" placeholder="Search for items…" name="q"/>
                     <button type="submit"><i class="fi-rs-search"></i></button>
                 </form>
@@ -640,50 +651,10 @@
                 <nav>
                     <ul class="mobile-menu font-heading">
                         <li class="menu-item-has-children">
-                            <a href="index.html">Home</a>
-                            <ul class="dropdown">
-                                <li><a href="index.html">Home 1</a></li>
-                                <li><a href="index-2.html">Home 2</a></li>
-                                <li><a href="index-3.html">Home 3</a></li>
-                                <li><a href="index-4.html">Home 4</a></li>
-                                <li><a href="index-5.html">Home 5</a></li>
-                                <li><a href="index-6.html">Home 6</a></li>
-                            </ul>
+                            <a href="{% url 'home:home' %}">Home</a>
                         </li>
                         <li class="menu-item-has-children">
-                            <a href="shop-grid-right.html">shop</a>
-                            <ul class="dropdown">
-                                <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
-                                <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
-                                <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
-                                <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
-                                <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">Single Product</a>
-                                    <ul class="dropdown">
-                                        <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
-                                        <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
-                                        <li><a href="shop-product-full.html">Product – No sidebar</a></li>
-                                        <li><a href="shop-product-vendor.html">Product – Vendor Infor</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="shop-filter.html">Shop – Filter</a></li>
-                                <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
-                                <li><a href="shop-cart.html">Shop – Cart</a></li>
-                                <li><a href="{% url 'home:checkout' %}">Shop – Checkout</a></li>
-                                <li><a href="shop-compare.html">Shop – Compare</a></li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">Shop Invoice</a>
-                                    <ul class="dropdown">
-                                        <li><a href="shop-invoice-1.html">Shop Invoice 1</a></li>
-                                        <li><a href="shop-invoice-2.html">Shop Invoice 2</a></li>
-                                        <li><a href="shop-invoice-3.html">Shop Invoice 3</a></li>
-                                        <li><a href="shop-invoice-4.html">Shop Invoice 4</a></li>
-                                        <li><a href="shop-invoice-5.html">Shop Invoice 5</a></li>
-                                        <li><a href="shop-invoice-6.html">Shop Invoice 6</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <a href="{% url 'home:product-list' %}">shop</a>
                         </li>
                         <li class="menu-item-has-children">
                             <a href="{% url 'home:vendor-list' %}">Vendors</a>
@@ -765,7 +736,7 @@
                     <a href="page-contact.html"><i class="fi-rs-marker"></i> Our location </a>
                 </div>
                 <div class="single-mobile-header-info">
-                    <a href="page-login.html"><i class="fi-rs-user"></i>Log In / Sign Up </a>
+                    <a href="{% url 'userauths:sign-in' %}"><i class="fi-rs-user"></i>Log In / Sign Up </a>
                 </div>
                 <div class="single-mobile-header-info">
                     <a href="#"><i class="fi-rs-headphones"></i>(+01) - 2345 - 6789 </a>
