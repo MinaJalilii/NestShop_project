@@ -330,4 +330,98 @@ $(document).ready(function () {
     });
 });
 
+let commentBodyInput = document.getElementById("comment-new")
+let nameInput = document.getElementById("name-new")
+let commentForm = document.getElementById("comment-form-new")
+let hiddenInput = document.querySelector(".product-id-input")
+const stars = document.querySelectorAll(".stars i");
+let starValue = "0";
+let commentList = document.querySelector(".comment-list")
+stars.forEach((star, index1) => {
+    star.addEventListener("click", () => {
+        starValue = star.getAttribute("data-value");
+        stars.forEach((star, index2) => {
+            index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
+        });
+    });
+});
+commentForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let reviewBody = commentBodyInput.value;
+    let name = nameInput.value;
+    let product_id = hiddenInput.value;
+    let formDiv = document.querySelector(".comment-form-div")
+    let afterAdd = document.getElementById("review-res")
 
+    $.ajax({
+        type: 'POST',
+        url: '/add-new-review/',
+        data: {
+            'review_body': reviewBody,
+            'name': name,
+            'product_id': product_id,
+            'rating_value': starValue,
+        },
+        datatype: 'json',
+        success: function (response) {
+            if (response.boolean === 'true') {
+                formDiv.style.display = 'none'
+                afterAdd.style.display = "block";
+                afterAdd.innerHTML = "Thanks for your review. It added successfully!"
+                setTimeout(function () {
+                    afterAdd.style.display = 'none'
+                }, 4000)
+            }
+        }
+    })
+})
+
+let replyBtns = document.querySelectorAll(".reply")
+
+replyBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+        event.preventDefault();
+        let parentElement = btn.closest(".reply-parent");
+        let replyFormDiv = parentElement.querySelector(".reply-form-div")
+        if (replyFormDiv.style.display === 'none' || replyFormDiv.style.display === '') {
+            replyFormDiv.style.display = 'block';
+        } else {
+            replyFormDiv.style.display = 'none';
+        }
+        let replyForm = replyFormDiv.querySelector('.reply_form')
+        let replyBodyInput = replyFormDiv.querySelector(".reply-new")
+        let replyHiddenInput = replyFormDiv.querySelector(".reply-product-id-input")
+        let parentIdInput = replyFormDiv.querySelector(".parent-id")
+
+        replyForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            let reviewBody = replyBodyInput.value;
+            let product_id = replyHiddenInput.value;
+            let formDiv = replyFormDiv;
+            let afterAdd = parentElement.querySelector(".review-res-reply")
+            let parentId = parentIdInput.value;
+
+            $.ajax({
+                type: 'POST',
+                url: '/add-new-reply/',
+                data: {
+                    'review_body': reviewBody,
+                    'product_id': product_id,
+                    'parent_id': parentId,
+                },
+                datatype: 'json',
+                success: function (response) {
+                    if (response.boolean === 'true') {
+                        formDiv.style.display = 'none'
+                        afterAdd.style.display = "block";
+                        afterAdd.textContent = "Thanks for your reply. It added successfully!"
+                        setTimeout(function () {
+                            afterAdd.style.display = 'none'
+                        }, 4000)
+                    }
+                }
+            })
+        })
+
+    });
+});

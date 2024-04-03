@@ -87,4 +87,6 @@ urlpatterns = [
 
     # All Deals
     path("all-deals", all_deals_view, name="all-deals"),
+    path('add-new-review/', add_new_review, name='add-new-review'),
+    path('add-new-reply/', add_new_reply, name='add-new-reply'),
 ]

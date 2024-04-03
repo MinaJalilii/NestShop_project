@@ -164,18 +164,31 @@ class CartOrderItems(models.Model):
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
     review = models.TextField(null=True)
-    rating = models.PositiveIntegerField(choices=RATING, default=None, null=True)
+    rating = models.PositiveIntegerField(choices=RATING, default=None, null=True, blank=True)
+    review_status = models.CharField(choices=STATUS, max_length=10)
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = 'Product Reviews'
 
     def __str__(self):
-        return f"{self.user.username}: {self.user.email}"
+        return f"{self.user.username}-{self.review[:70]}"
 
     def get_rating(self):
-        return self.rating
+        new_rating = 0
+        if self.rating == 1:
+            new_rating = 20
+        elif self.rating == 2:
+            new_rating = 42
+        elif self.rating == 3:
+            new_rating = 63
+        elif self.rating == 4:
+            new_rating = 85
+        elif self.rating == 5:
+            new_rating = 100
+        return new_rating
 
 
 class Wishlist(models.Model):

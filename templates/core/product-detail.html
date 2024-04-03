@@ -1,14 +1,14 @@
-{% extends 'includes/base.html' %}
+﻿{% extends 'includes/base.html' %}
 {% load static %}
 {% block content %}
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                    <span></span> <a href="shop-grid-right.html">Vegetables & tubers</a> <span></span> Seeds of Change
-                    Organic
-                </div>
+                    <a href="{% url 'home:home' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> <a
+                        href="{% url 'home:category_product_list' product.category.cid %}">{{ product.category.title }}</a>
+                    <span></span> {{ product.title }}</div>
             </div>
         </div>
         <div class="container mb-30">
@@ -52,24 +52,23 @@
                                             <div class="product-detail-rating">
                                                 <div class="product-rate-cover text-end">
                                                     <div class="product-rate d-inline-block">
-                                                        <div class="product-rating" style="width: 90%"></div>
+                                                        <div class="product-rating"
+                                                             style="width: {{ rating_width }}%"></div>
                                                     </div>
-                                                    <span class="font-small ml-5 text-muted"> (32 reviews)</span>
+                                                    <span class="font-small ml-5 text-muted"> ({{ reviews.count }} reviews)</span>
                                                 </div>
                                             </div>
                                             <div class="clearfix product-price-cover">
                                                 <div class="product-price primary-color float-left">
-                                                    <span class="current-price text-brand">$</span><span
-                                                        class="current-price text-brand"
-                                                        id="current-product-price-{{ product.id }}">{{ product.price }}</span>
+                                                    <span class="current-price text-brand">$38</span>
                                                     <span>
-                                                        <span class="save-price font-md color3 ml-15">{{ product.get_percentage|floatformat:0 }}% Off</span>
-                                                        <span class="old-price font-md ml-15"><span>$</span> {{ product.old_price }}</span>
+                                                        <span class="save-price font-md color3 ml-15">26% Off</span>
+                                                        <span class="old-price font-md ml-15">$52</span>
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="short-desc mb-30">
-                                                <p class="font-lg">{{ product.description }}</p>
+                                                <p class="font-lg">{{ product.description|slice:"0:40" }}</p>
                                             </div>
                                             {#                                            <div class="attr-detail attr-size mb-30">#}
                                             {#                                                <strong class="mr-10">Size / Weight: </strong>#}
@@ -82,18 +81,18 @@
                                             {#                                                </ul>#}
                                             {#                                            </div>#}
                                             <div class="detail-extralink mb-50">
-                                                {#                                                <div class="detail-qty border radius" id="detail-qty">#}
+                                                {#                                                <div class="detail-qty border radius">#}
                                                 {#                                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>#}
                                                 {#                                                    <span class="qty-val">1</span>#}
                                                 {#                                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>#}
                                                 {#                                                </div>#}
-                                                <input type="number" value="1" id="product-quantity-{{ product.id }}" min="1"
-                                                       class="border-solid mb-20 product-quantity-{{ product.id }}" name="quantity"
+                                                <input type="number" value="1" id="product-quantity-{{ product.id }}"
+                                                       min="1"
+                                                       class="border-solid mb-20 product-quantity-{{ product.id }}"
+                                                       name="quantity"
                                                        style="width: 90px;height: 50px;border-color: #3bb77e; color: #3bb77e;">
                                                 <br>
                                                 <div class="product-extra-link2">
-{#                                                    <input type="hidden" class="product-quantity-{{ product.id }}"#}
-{#                                                           value="1"/>#}
                                                     <input type="hidden" class="product-pid-{{ product.id }}"
                                                            value="{{ product.pid }}"/>
                                                     <input type="hidden" class="product-image-{{ product.id }}"
@@ -102,13 +101,16 @@
                                                            value="{{ product.id }}"/>
                                                     <input type="hidden" class="product-title-{{ product.id }}"
                                                            value="{{ product.title }}"/>
-                                                    <button type="submit" class="button my-add-to-cart" data-index="{{ product.id }}"><i
+                                                    <button type="submit" class="button my-add-to-cart"
+                                                            data-index="{{ product.id }}"><i
                                                             class="fi-rs-shopping-cart"></i>Add to cart
                                                     </button>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                       href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn hover-up"
-                                                       href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                    <a aria-label="Add To Wishlist"
+                                                       class="action-btn hover-up add-to-wishlist"
+                                                       data-product-id="{{ product.id }}"><i
+                                                            class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Compare" class="action-btn hover-up add-to-compare"
+                                                       data-index="{{ product.id }}"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
                                             </div>
                                             <div class="font-xs">
@@ -160,110 +162,110 @@
                                                     <p>{{ product.description }}</p>
                                                 </div>
                                             </div>
-                                            {#                                            <div class="tab-pane fade" id="Additional-info">#}
-                                            {#                                                <table class="font-md">#}
-                                            {#                                                    <tbody>#}
-                                            {#                                                    <tr class="stand-up">#}
-                                            {#                                                        <th>Stand Up</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>35″L x 24″W x 37-45″H(front to back wheel)</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="folded-wo-wheels">#}
-                                            {#                                                        <th>Folded (w/o wheels)</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>32.5″L x 18.5″W x 16.5″H</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="folded-w-wheels">#}
-                                            {#                                                        <th>Folded (w/ wheels)</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>32.5″L x 24″W x 18.5″H</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="door-pass-through">#}
-                                            {#                                                        <th>Door Pass Through</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>24</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="frame">#}
-                                            {#                                                        <th>Frame</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>Aluminum</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="weight-wo-wheels">#}
-                                            {#                                                        <th>Weight (w/o wheels)</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>20 LBS</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="weight-capacity">#}
-                                            {#                                                        <th>Weight Capacity</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>60 LBS</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="width">#}
-                                            {#                                                        <th>Width</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>24″</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="handle-height-ground-to-handle">#}
-                                            {#                                                        <th>Handle height (ground to handle)</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>37-45″</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="wheels">#}
-                                            {#                                                        <th>Wheels</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>12″ air / wide track slick tread</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="seat-back-height">#}
-                                            {#                                                        <th>Seat back height</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>21.5″</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="head-room-inside-canopy">#}
-                                            {#                                                        <th>Head room (inside canopy)</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>25″</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="pa_color">#}
-                                            {#                                                        <th>Color</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>Black, Blue, Red, White</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    <tr class="pa_size">#}
-                                            {#                                                        <th>Size</th>#}
-                                            {#                                                        <td>#}
-                                            {#                                                            <p>M, S</p>#}
-                                            {#                                                        </td>#}
-                                            {#                                                    </tr>#}
-                                            {#                                                    </tbody>#}
-                                            {#                                                </table>#}
-                                            {#                                            </div>#}
+                                            <div class="tab-pane fade" id="Additional-info">
+                                                <table class="font-md">
+                                                    <tbody>
+                                                    <tr class="stand-up">
+                                                        <th>Stand Up</th>
+                                                        <td>
+                                                            <p>35″L x 24″W x 37-45″H(front to back wheel)</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="folded-wo-wheels">
+                                                        <th>Folded (w/o wheels)</th>
+                                                        <td>
+                                                            <p>32.5″L x 18.5″W x 16.5″H</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="folded-w-wheels">
+                                                        <th>Folded (w/ wheels)</th>
+                                                        <td>
+                                                            <p>32.5″L x 24″W x 18.5″H</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="door-pass-through">
+                                                        <th>Door Pass Through</th>
+                                                        <td>
+                                                            <p>24</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="frame">
+                                                        <th>Frame</th>
+                                                        <td>
+                                                            <p>Aluminum</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="weight-wo-wheels">
+                                                        <th>Weight (w/o wheels)</th>
+                                                        <td>
+                                                            <p>20 LBS</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="weight-capacity">
+                                                        <th>Weight Capacity</th>
+                                                        <td>
+                                                            <p>60 LBS</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="width">
+                                                        <th>Width</th>
+                                                        <td>
+                                                            <p>24″</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="handle-height-ground-to-handle">
+                                                        <th>Handle height (ground to handle)</th>
+                                                        <td>
+                                                            <p>37-45″</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="wheels">
+                                                        <th>Wheels</th>
+                                                        <td>
+                                                            <p>12″ air / wide track slick tread</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="seat-back-height">
+                                                        <th>Seat back height</th>
+                                                        <td>
+                                                            <p>21.5″</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="head-room-inside-canopy">
+                                                        <th>Head room (inside canopy)</th>
+                                                        <td>
+                                                            <p>25″</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="pa_color">
+                                                        <th>Color</th>
+                                                        <td>
+                                                            <p>Black, Blue, Red, White</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="pa_size">
+                                                        <th>Size</th>
+                                                        <td>
+                                                            <p>M, S</p>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             <div class="tab-pane fade" id="Vendor-info">
                                                 <div class="vendor-logo d-flex mb-30">
-                                                    <img src="{{ product.vendor.image.url }}" alt=""
-                                                         style="width: 120px; height: 120px;"/>
+                                                    <img src="{{ product.vendor.image.url }}" alt=""/>
                                                     <div class="vendor-name ml-15">
                                                         <h6>
                                                             <a href="{% url 'home:vendor-detail' product.vendor.vid %}">{{ product.vendor.title }}</a>
                                                         </h6>
-                                                        <div class="product-rate-cover text-end">
-                                                            <div class="product-rate d-inline-block">
-                                                                <div class="product-rating" style="width: 90%"></div>
-                                                            </div>
-                                                            <span class="font-small ml-5 text-muted"> (32 reviews)</span>
-                                                        </div>
+                                                        {#                                                        <div class="product-rate-cover text-end">#}
+                                                        {#                                                            <div class="product-rate d-inline-block">#}
+                                                        {#                                                                <div class="product-rating"#}
+                                                        {#                                                                     style="width: {{ rating_width }}%"></div>#}
+                                                        {#                                                            </div>#}
+                                                        {#                                                            <span class="font-small ml-5 text-muted"> ({{ reviews.count }} reviews)</span>#}
+                                                        {#                                                        </div>#}
                                                     </div>
                                                 </div>
                                                 <ul class="contact-infor mb-50">
@@ -296,135 +298,238 @@
                                             </div>
                                             <div class="tab-pane fade" id="Reviews">
                                                 <!--Comments-->
-                                                {#                                                {% if reviews.count != 0 %}#}
-                                                <div class="comments-area">
-                                                    <div class="row">
-                                                        <div class="col-lg-8">
-                                                            <h4 class="mb-30">Customer questions & answers</h4>
-                                                            <div class="comment-list">
-                                                                {% for review in reviews %}
-                                                                    <div class="single-comment justify-content-between d-flex mb-30">
-                                                                        <div class="user justify-content-between d-flex">
-                                                                            <div class="thumb text-center">
-                                                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLsVeRshntRdpPcgbLmfHG3u1tcF8w0MFV9w&usqp=CAU"
-                                                                                     alt=""/>
-                                                                                <a href="#"
-                                                                                   class="font-heading text-brand">{{ review.user.username }}</a>
-                                                                            </div>
-                                                                            <div class="desc">
-                                                                                <div class="d-flex justify-content-between mb-10">
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <span class="font-xs text-muted">{{ review.date|date:"M d, Y" }}</span>
+                                                {% if reviews %}
+                                                    <div class="comments-area">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <h4 class="mb-30">Customer questions & answers</h4>
+                                                                <div class="comment-list">
+                                                                    {% for comment in reviews %}
+                                                                        {% if comment.parent == None %}
+                                                                            {% if comment.review_status == "published" %}
+                                                                                <div class="reply-parent">
+                                                                                    <div class="single-comment justify-content-between d-flex mb-30">
+                                                                                        <div class="user justify-content-between d-flex">
+                                                                                            <div class="thumb text-center">
+                                                                                                <img id="comment-user-img"
+                                                                                                     src="{{ request.user.profile.image.url }}"
+                                                                                                     alt="user image"/>
+                                                                                                <a href=""
+                                                                                                   class="font-heading text-brand"
+                                                                                                   id="comment-user-username">{{ request.user.username }}</a>
+                                                                                            </div>
+                                                                                            <div class="desc">
+                                                                                                <div class="d-flex justify-content-between mb-10">
+                                                                                                    <div class="d-flex align-items-center">
+                                                                                                        <span class="font-xs text-muted"><span
+                                                                                                                id="comment-date">{{ comment.date.date }}</span> at <span
+                                                                                                                id="comment-time">{{ comment.date.time }}</span></span>
+                                                                                                    </div>
+                                                                                                    <div class="product-rate d-inline-block">
+                                                                                                        <div class="product-rating"
+                                                                                                             style="width: {{ comment.get_rating }}%;"></div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <p class="mb-10">{{ comment.review }}<a
+                                                                                                        class="reply">Reply</a>
+                                                                                                </p></div>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div>
-                                                                                        {% for star in review.rating|ljust:review.rating %}
-                                                                                            <i class="fas fa-star text-warning"></i>
-                                                                                        {% endfor %}
+                                                                                    {# reply form #}
+                                                                                    <strong class="text-success ml-30 review-res-reply"
+                                                                                            style="display: none;"></strong>
+                                                                                    <div class="ml-30 reply-form-div"
+                                                                                         style="display: none;">
+                                                                                        <form class="reply_form"
+                                                                                              action=""
+                                                                                              method="post">
+                                                                                            {% csrf_token %}
+                                                                                            <br/>
+                                                                                            <input type="hidden"
+                                                                                                   class="parent-id"
+                                                                                                   value="{{ comment.id }}">
+                                                                                            <input type="hidden"
+                                                                                                   class="reply-product-id-input"
+                                                                                                   value="{{ product.id }}">
+                                                                                            <div class="row">
+                                                                                                <div class="col-12">
+                                                                                                    <div class="form-group">
+                                                                                                        <textarea
+                                                                                                                class="form-control w-100 reply-new"
+                                                                                                                name="comment"
+                                                                                                                cols="30"
+                                                                                                                rows="4"
+                                                                                                                placeholder="Write Your Reply"></textarea>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <button type="submit"
+                                                                                                        class="button button-contactForm"
+                                                                                                        id="add-review-btn">
+                                                                                                    Submit
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </form>
                                                                                     </div>
                                                                                 </div>
-                                                                                <p class="mb-10">{{ review.review }}
-                                                                                    <a class="reply">Reply</a>
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                {% endfor %}
+                                                                            {% endif %}
+                                                                            {% for reply in comment.replies.all %}
+                                                                                {% if reply.review_status == "published" %}
+                                                                                    <div class="reply-parent">
+                                                                                        <div class="single-comment justify-content-between d-flex mb-30 ml-30">
+                                                                                            <div class="user justify-content-between d-flex">
+                                                                                                <div class="thumb text-center">
+                                                                                                    <img id="comment-user-img"
+                                                                                                         src="{{ request.user.profile.image.url }}"
+                                                                                                         alt="user image"/>
+                                                                                                    <a href=""
+                                                                                                       class="font-heading text-brand"
+                                                                                                       id="comment-user-username">{{ request.user.username }}</a>
+                                                                                                </div>
+                                                                                                <div class="desc">
+                                                                                                    <div class="d-flex justify-content-between mb-10">
+                                                                                                        <div class="d-flex align-items-center">
+                                                                                                            <span class="font-xs text-muted"><span
+                                                                                                                    id="comment-date">{{ reply.date.date }}</span> at <span
+                                                                                                                    id="comment-time">{{ reply.date.time }}</span></span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <p class="mb-10">{{ reply.review }}<a
+                                                                                                            class="reply">Reply</a>
+                                                                                                    </p></div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        {# reply form #}
+                                                                                        <strong class="text-success ml-30 review-res-reply"
+                                                                                                style="display: none;"></strong>
+                                                                                        <div class="ml-30 reply-form-div"
+                                                                                             style="display: none;">
+                                                                                            <form class="reply_form"
+                                                                                                  action=""
+                                                                                                  method="post">
+                                                                                                {% csrf_token %}
+                                                                                                <br/>
+                                                                                                <input type="hidden"
+                                                                                                       class="parent-id"
+                                                                                                       value="{{ comment.id }}">
+                                                                                                <input type="hidden"
+                                                                                                       class="reply-product-id-input"
+                                                                                                       value="{{ product.id }}">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-12">
+                                                                                                        <div class="form-group">
+                                                                                                            <textarea
+                                                                                                                    class="form-control w-100 reply-new"
+                                                                                                                    name="comment"
+                                                                                                                    id="reply-new"
+                                                                                                                    cols="30"
+                                                                                                                    rows="4"
+                                                                                                                    placeholder="Write Your Reply"></textarea>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <button type="submit"
+                                                                                                            class="button button-contactForm"
+                                                                                                            id="add-review-btn">
+                                                                                                        Submit
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        {% if reviews.count != 0 %}
                                                             <div class="col-lg-4">
                                                                 <h4 class="mb-30">Customer reviews</h4>
                                                                 <div class="d-flex mb-30">
                                                                     <div class="product-rate d-inline-block mr-15">
                                                                         <div class="product-rating"
-                                                                             style="width: 90%"></div>
+                                                                             style="width: {{ rating_width }}%"></div>
                                                                     </div>
-                                                                    <h6><span
-                                                                            id="product-avg">{{ avg_rating.rating|floatformat:1 }}</span>
-                                                                        out
-                                                                        of 5</h6>
+                                                                    <h6>{{ avg_rating.rating|floatformat:1 }} out of
+                                                                        5</h6>
                                                                 </div>
-                                                                <div class="progress">
-                                                                    <span>5 star</span>
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         style="width: 50%" aria-valuenow="50"
-                                                                         aria-valuemin="0" aria-valuemax="100">50%
-                                                                    </div>
-                                                                </div>
-                                                                <div class="progress">
-                                                                    <span>4 star</span>
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         style="width: 25%" aria-valuenow="25"
-                                                                         aria-valuemin="0" aria-valuemax="100">25%
-                                                                    </div>
-                                                                </div>
-                                                                <div class="progress">
-                                                                    <span>3 star</span>
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         style="width: 45%" aria-valuenow="45"
-                                                                         aria-valuemin="0" aria-valuemax="100">45%
-                                                                    </div>
-                                                                </div>
-                                                                <div class="progress">
-                                                                    <span>2 star</span>
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         style="width: 65%" aria-valuenow="65"
-                                                                         aria-valuemin="0" aria-valuemax="100">65%
-                                                                    </div>
-                                                                </div>
-                                                                <div class="progress mb-30">
-                                                                    <span>1 star</span>
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         style="width: 85%" aria-valuenow="85"
-                                                                         aria-valuemin="0" aria-valuemax="100">85%
-                                                                    </div>
-                                                                </div>
-                                                                <a href="#" class="font-xs text-muted">How are ratings
-                                                                    calculated?</a>
-                                                            </div>
-                                                            </div>
-                                                        {% endif %}
-                                                </div>
-                                                {#                                                {% endif %}#}
-                                                <!--comment form-->
-                                                {#                                                {% if request.user.is_authenticated %}#}
-                                                {#                                                    {% if make_review %}#}
-                                                <strong class="text-success" id="review-res"></strong>
-                                                <div class="comment-form" id="add-review">
-                                                    <h4 class="mb-15">Add a review</h4>
-                                                    {#                                                    <div class="product-rate d-inline-block mb-30"></div>#}
-                                                    <div class="row">
-                                                        <div class="col-lg-8 col-md-12">
-                                                            <form class="form-contact comment_form"
-                                                                  action="{% url 'home:ajax_add_review' product.id %}"
-                                                                  id="commentForm" method="POST">
-                                                                {% csrf_token %}
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <div class="form-group" id="comment">
-                                                                            {{ review_form.review }}
+                                                                {% for star, percentage in rating_percentages.items %}
+                                                                    <div class="progress">
+                                                                        <span>{{ star }} star</span>
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                             style="width: {{ percentage }}%"
+                                                                             aria-valuenow="{{ percentage }}"
+                                                                             aria-valuemin="0"
+                                                                             aria-valuemax="100">{{ percentage|floatformat:0 }}%
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-12">
-                                                                        <div class="form-group">
-                                                                            {{ review_form.rating }}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <button type="submit"
-                                                                            class="button button-contactForm"
-                                                                            id="submit-btn" onclick="avg_reviews();">
-                                                                        Submit
-                                                                        Review
-                                                                    </button>
-                                                                </div>
-                                                            </form>
+                                                                {% endfor %}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                {#                                                    {% endif %}#}
-                                                {#                                                {% endif %}#}
+                                                {% endif %}
+                                                <!--comment form-->
+                                                {% if request.user.is_authenticated %}
+                                                    {% if make_review %}
+                                                        <strong class="text-success" id="review-res"
+                                                                style="display: none;"></strong>
+                                                        <div class="comment-form comment-form-div">
+                                                            <h4 class="mb-15">Add a review</h4>
+                                                            {#                                                    <div class="product-rate d-inline-block mb-30"></div>#}
+                                                            <div class="row">
+                                                                <div class="col-lg-8 col-md-12">
+                                                                    <form class="form-contact comment_form" action=""
+                                                                          method="post"
+                                                                          id="comment-form-new">
+                                                                        <div class="stars">
+                                                                            <i class="fa-solid fa-star"
+                                                                               data-value="1"></i>
+                                                                            <i class="fa-solid fa-star"
+                                                                               data-value="2"></i>
+                                                                            <i class="fa-solid fa-star"
+                                                                               data-value="3"></i>
+                                                                            <i class="fa-solid fa-star"
+                                                                               data-value="4"></i>
+                                                                            <i class="fa-solid fa-star"
+                                                                               data-value="5"></i>
+                                                                        </div>
+                                                                        {% csrf_token %}
+                                                                        <br/>
+                                                                        <input type="hidden" class="product-id-input"
+                                                                               value="{{ product.id }}">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6">
+                                                                                <div class="form-group">
+                                                                                    <input class="form-control"
+                                                                                           name="name"
+                                                                                           id="name-new" type="text"
+                                                                                           placeholder="Name"/>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12">
+                                                                                <div class="form-group">
+                                                                            <textarea class="form-control w-100"
+                                                                                      name="comment" id="comment-new"
+                                                                                      cols="30" rows="9"
+                                                                                      placeholder="Write Comment"></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <button type="submit"
+                                                                                    class="button button-contactForm"
+                                                                                    id="add-review-btn">Submit
+                                                                                Review
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -452,19 +557,19 @@
                                                                     </a>
                                                                 </div>
                                                                 <div class="product-action-1">
-                                                                    <a aria-label="Quick view"
-                                                                       class="action-btn small hover-up"
-                                                                       data-bs-toggle="modal"
-                                                                       data-bs-target="#quickViewModal"><i
-                                                                            class="fi-rs-search"></i></a>
                                                                     <a aria-label="Add To Wishlist"
-                                                                       class="action-btn small hover-up"
-                                                                       href="shop-wishlist.html" tabindex="0"><i
+                                                                       class="action-btn add-to-wishlist"
+                                                                       data-product-id="{{ product.id }}"><i
                                                                             class="fi-rs-heart"></i></a>
                                                                     <a aria-label="Compare"
-                                                                       class="action-btn small hover-up"
-                                                                       href="shop-compare.html" tabindex="0"><i
+                                                                       class="action-btn add-to-compare"
+                                                                       data-index="{{ product.id }}"
+                                                                       href="{% url 'home:add-to-compare' %}"><i
                                                                             class="fi-rs-shuffle"></i></a>
+                                                                    <a aria-label="Quick view" class="action-btn"
+                                                                       data-bs-toggle="modal"
+                                                                       data-bs-target="#quickViewModal-{{ forloop.counter }}"><i
+                                                                            class="fi-rs-eye"></i></a>
                                                                 </div>
                                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                                     <span class="hot">-{{ product.get_percentage|floatformat:0 }}% off</span>
@@ -533,14 +638,14 @@
                                          style="width: 100px; height: 100px;"/>
                                     <div class="vendor-name ml-15">
                                         <h6>
-                                            <a href="vendor-details-2.html">{{ product.vendor.title }}</a>
+                                            <a href="{% url 'home:vendor-detail' product.vendor.vid %}">{{ product.vendor.title }}</a>
                                         </h6>
-                                        <div class="product-rate-cover text-end">
-                                            <div class="product-rate d-inline-block">
-                                                <div class="product-rating" style="width: 90%"></div>
-                                            </div>
-                                            <span class="font-small ml-5 text-muted"> (32 reviews)</span>
-                                        </div>
+{#                                        <div class="product-rate-cover text-end">#}
+{#                                            <div class="product-rate d-inline-block">#}
+{#                                                <div class="product-rating" style="width: 90%"></div>#}
+{#                                            </div>#}
+{#                                            <span class="font-small ml-5 text-muted"> (32 reviews)</span>#}
+{#                                        </div>#}
                                     </div>
                                 </div>
                                 <ul class="contact-infor">
@@ -570,7 +675,7 @@
                                 <ul>
                                     <li class="hr"><span></span></li>
                                 </ul>
-                                <p>Become a Vendor? <a href="page-register.html"> Register now</a></p>
+{#                                <p>Become a Vendor? <a href="page-register.html"> Register now</a></p>#}
                             </div>
                             <div class="sidebar-widget widget-category-2 mb-30">
                                 <h5 class="section-title style-1 mb-30">Category</h5>
@@ -584,65 +689,10 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <!-- Fillter By Price -->
-                            <div class="sidebar-widget price_range range mb-30">
-                                <h5 class="section-title style-1 mb-30">Fill by price</h5>
-                                <div class="price-filter">
-                                    <div class="price-filter-inner">
-                                        <div id="slider-range" class="mb-20"></div>
-                                        <div class="d-flex justify-content-between">
-                                            <div class="caption">From: <strong id="slider-range-value1"
-                                                                               class="text-brand"></strong></div>
-                                            <div class="caption">To: <strong id="slider-range-value2"
-                                                                             class="text-brand"></strong></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group">
-                                    <div class="list-group-item mb-10 mt-10">
-                                        <label class="fw-900">Color</label>
-                                        <div class="custome-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="checkbox"
-                                                   id="exampleCheckbox1" value=""/>
-                                            <label class="form-check-label"
-                                                   for="exampleCheckbox1"><span>Red (56)</span></label>
-                                            <br/>
-                                            <input class="form-check-input" type="checkbox" name="checkbox"
-                                                   id="exampleCheckbox2" value=""/>
-                                            <label class="form-check-label"
-                                                   for="exampleCheckbox2"><span>Green (78)</span></label>
-                                            <br/>
-                                            <input class="form-check-input" type="checkbox" name="checkbox"
-                                                   id="exampleCheckbox3" value=""/>
-                                            <label class="form-check-label"
-                                                   for="exampleCheckbox3"><span>Blue (54)</span></label>
-                                        </div>
-                                        <label class="fw-900 mt-15">Item Condition</label>
-                                        <div class="custome-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="checkbox"
-                                                   id="exampleCheckbox11" value=""/>
-                                            <label class="form-check-label"
-                                                   for="exampleCheckbox11"><span>New (1506)</span></label>
-                                            <br/>
-                                            <input class="form-check-input" type="checkbox" name="checkbox"
-                                                   id="exampleCheckbox21" value=""/>
-                                            <label class="form-check-label"
-                                                   for="exampleCheckbox21"><span>Refurbished (27)</span></label>
-                                            <br/>
-                                            <input class="form-check-input" type="checkbox" name="checkbox"
-                                                   id="exampleCheckbox31" value=""/>
-                                            <label class="form-check-label"
-                                                   for="exampleCheckbox31"><span>Used (45)</span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i
-                                        class="fi-rs-filter mr-5"></i> Fillter</a>
-                            </div>
                             <!-- Product sidebar Widget -->
                             <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                                 <h5 class="section-title style-1 mb-30">New products</h5>
-                                {% for product in products|slice:'0:4' %}
+                                {% for product in products|slice:"0:3" %}
                                     <div class="single-post clearfix">
                                         <div class="image">
                                             <img src="{{ product.image.url }}" alt="#"/>
@@ -652,23 +702,12 @@
                                                 <a href="{% url 'home:product-detail' product.pid %}">{{ product.title }}</a>
                                             </h5>
                                             <p class="price mb-0 mt-5">${{ product.price }}</p>
-                                            <div class="product-rate">
-                                                <div class="product-rating" style="width: 90%"></div>
-                                            </div>
+{#                                            <div class="product-rate">#}
+{#                                                <div class="product-rating" style="width: 90%"></div>#}
+{#                                            </div>#}
                                         </div>
                                     </div>
                                 {% endfor %}
-                            </div>
-                            <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
-                                {#                                <img src="{% static 'assets/imgs/banner/banner-11.png' %}" alt=""/>#}
-                                <div class="banner-text">
-                                    <span>Oganic</span>
-                                    <h4>
-                                        Save 17% <br/>
-                                        on <span class="text-brand">Oganic</span><br/>
-                                        Juice
-                                    </h4>
-                                </div>
                             </div>
                         </div>
                     </div>

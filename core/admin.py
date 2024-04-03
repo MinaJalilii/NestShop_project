@@ -36,7 +36,13 @@ class CartOrderItemsAdmin(admin.ModelAdmin):
 
 @admin.register(ProductReview)
 class ProductReviewAdmin(admin.ModelAdmin):
-    list_display = ['user', 'product', 'review', 'rating']
+    list_display = ['review_status', 'user', 'parent', 'product', 'review', 'rating']
+
+    @admin.display()
+    def get_parent(self, obj):
+        if obj.comment.parent:
+            return obj.comment.parent
+        return None
 
 
 @admin.register(Address)

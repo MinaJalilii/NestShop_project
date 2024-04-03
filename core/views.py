@@ -2,6 +2,9 @@ from django.db.models.functions import ExtractMonth
 from django.http import JsonResponse
 from django.shortcuts import render, get_list_or_404, redirect
 from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
 from core.models import Product, ProductReview, CartOrder, Category, Address, Vendor, Wishlist, \
     CartOrderItems
 from userauths.models import Profile
@@ -11,6 +14,7 @@ from core.forms import ProductReviewForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import calendar
+from userauths.models import User
 
 
 def home_view(request):
@@ -48,13 +52,44 @@ def vendor_detail_view(request, vid):
                   {'vendor': vendor, 'products': products, 'categories': categories})
 
 
+def rating_to_width(avg_rating):
+    # Base widths for each star rating
+    widths = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
+
+    # For decimal ratings, find the nearest lower whole number,
+    # and then interpolate the decimal part to get the correct width.
+    base_width = widths[int(avg_rating)]  # Width of the lower whole number
+    decimal_part = avg_rating - int(avg_rating)
+
+    if decimal_part == 0:
+        return base_width
+    else:
+        # Assuming each half star is worth 10% additional width
+        additional_width = 10 if decimal_part <= 0.5 else 20
+        return base_width + additional_width - (10 * (0.5 - decimal_part) if decimal_part < 0.5 else 0)
+
+
 def product_detail_view(request, pid):
     product = Product.objects.get(pid=pid)
     product_images = product.images.all()
     related_products = Product.objects.filter(category=product.category).exclude(pid=pid)
     products = Product.objects.all().order_by('-date').exclude(pid=pid)
-    reviews = ProductReview.objects.filter(product=product).order_by("-date")
-    avg_rating = ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
+    reviews = ProductReview.objects.filter(product=product, review_status="published").order_by("-date")
+    total_reviews = reviews.count()
+    # Calculate counts for each rating value
+    rating_counts = reviews.values('rating').annotate(count=Count('rating')).order_by('rating')
+    # Initialize dictionary to hold percentage of each rating
+    rating_percentages = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    # Calculate percentage for each rating
+    for rating in rating_counts:
+        if total_reviews > 0:
+            rating_percentages[rating['rating']] = (rating['count'] / total_reviews) * 100
+    avg_rating = ProductReview.objects.filter(product=product, review_status="published").aggregate(
+        rating=Avg('rating'))
+    if avg_rating['rating'] is not None:
+        rating_width = rating_to_width(avg_rating['rating'])
+    else:
+        rating_width = 0
     review_form = ProductReviewForm()
     make_review = True
     if request.user.is_authenticated:
@@ -64,7 +99,8 @@ def product_detail_view(request, pid):
     return render(request, 'core/product-detail.html',
                   {'product': product, 'product_images': product_images,
                    'related_products': related_products, 'products': products, 'reviews': reviews,
-                   'avg_rating': avg_rating, 'review_form': review_form, 'make_review': make_review})
+                   'avg_rating': avg_rating, 'review_form': review_form, 'make_review': make_review,
+                   'rating_width': rating_width, 'rating_percentages': rating_percentages, })
 
 
 def tag_list(request, tag_slug):
@@ -444,3 +480,60 @@ def delete_product_from_compare(request):
         # 'mydata': context,
         'total_items': len(request.session['compare']),
     })
+
+
+@require_POST
+@csrf_exempt
+def add_new_review(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        review_body = request.POST.get('review_body')
+        user = request.user
+        product = Product.objects.get(id=product_id)
+        rating_value = request.POST.get("rating_value")
+        review = ProductReview.objects.create(
+            review=review_body,
+            product=product,
+            user=user,
+            rating=int(rating_value),
+            review_status='in_review',
+        )
+        review_date = review.date.date().strftime('%B %d, %Y')
+        review_time = review.date.time().strftime('%I:%M %p').lower().replace('m', '.m.')
+        return JsonResponse({
+            'boolean': 'true',
+            'image': user.profile.image.url,
+            'username': str(user.username),
+            'date': review_date,
+            'time': review_time,
+            'review': str(review.review),
+        })
+
+
+@require_POST
+@csrf_exempt
+def add_new_reply(request):
+    if request.method == 'POST':
+        parent_id = request.POST.get('parent_id')
+        product_id = request.POST.get('product_id')
+        review_body = request.POST.get('review_body')
+        user = request.user
+        product = Product.objects.get(id=product_id)
+        review = ProductReview.objects.create(
+            parent_id=parent_id,
+            review=review_body,
+            product=product,
+            user=user,
+            review_status='in_review',
+        )
+        review_date = review.date.date().strftime('%B %d, %Y')
+        review_time = review.date.time().strftime('%I:%M %p').lower().replace('m', '.m.')
+
+        return JsonResponse({
+            'boolean': 'true',
+            'image': user.profile.image.url,
+            'username': str(user.username),
+            'date': review_date,
+            'time': review_time,
+            'review': str(review.review),
+        })
