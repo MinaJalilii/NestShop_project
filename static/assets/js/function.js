@@ -345,36 +345,38 @@ stars.forEach((star, index1) => {
         });
     });
 });
-commentForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    let reviewBody = commentBodyInput.value;
-    let name = nameInput.value;
-    let product_id = hiddenInput.value;
-    let formDiv = document.querySelector(".comment-form-div")
-    let afterAdd = document.getElementById("review-res")
+if (commentForm) {
+    commentForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let reviewBody = commentBodyInput.value;
+        let name = nameInput.value;
+        let product_id = hiddenInput.value;
+        let formDiv = document.querySelector(".comment-form-div")
+        let afterAdd = document.getElementById("review-res")
 
-    $.ajax({
-        type: 'POST',
-        url: '/add-new-review/',
-        data: {
-            'review_body': reviewBody,
-            'name': name,
-            'product_id': product_id,
-            'rating_value': starValue,
-        },
-        datatype: 'json',
-        success: function (response) {
-            if (response.boolean === 'true') {
-                formDiv.style.display = 'none'
-                afterAdd.style.display = "block";
-                afterAdd.innerHTML = "Thanks for your review. It added successfully!"
-                setTimeout(function () {
-                    afterAdd.style.display = 'none'
-                }, 4000)
+        $.ajax({
+            type: 'POST',
+            url: '/add-new-review/',
+            data: {
+                'review_body': reviewBody,
+                'name': name,
+                'product_id': product_id,
+                'rating_value': starValue,
+            },
+            datatype: 'json',
+            success: function (response) {
+                if (response.boolean === 'true') {
+                    formDiv.style.display = 'none'
+                    afterAdd.style.display = "block";
+                    afterAdd.innerHTML = "Thanks for your review. It added successfully!"
+                    setTimeout(function () {
+                        afterAdd.style.display = 'none'
+                    }, 4000)
+                }
             }
-        }
+        })
     })
-})
+}
 
 let replyBtns = document.querySelectorAll(".reply")
 
