@@ -311,12 +311,18 @@
                                                                                     <div class="single-comment justify-content-between d-flex mb-30">
                                                                                         <div class="user justify-content-between d-flex">
                                                                                             <div class="thumb text-center">
-                                                                                                <img id="comment-user-img"
-                                                                                                     src="{{ request.user.profile.image.url }}"
-                                                                                                     alt="user image"/>
+                                                                                                {% if comment.user.profile.image %}
+                                                                                                    <img id="comment-user-img"
+                                                                                                         src="{{ comment.user.profile.image.url }}"
+                                                                                                         alt="user image"/>
+                                                                                                {% else %}
+                                                                                                    <img id="comment-user-img"
+                                                                                                         src="{% static 'assets/imgs/profile/defult.jpg' %}"
+                                                                                                         alt="user image"/>
+                                                                                                {% endif %}
                                                                                                 <a href=""
                                                                                                    class="font-heading text-brand"
-                                                                                                   id="comment-user-username">{{ request.user.username }}</a>
+                                                                                                   id="comment-user-username">{{ comment.user.username }}</a>
                                                                                             </div>
                                                                                             <div class="desc">
                                                                                                 <div class="d-flex justify-content-between mb-10">
@@ -380,12 +386,18 @@
                                                                                         <div class="single-comment justify-content-between d-flex mb-30 ml-30">
                                                                                             <div class="user justify-content-between d-flex">
                                                                                                 <div class="thumb text-center">
-                                                                                                    <img id="comment-user-img"
-                                                                                                         src="{{ request.user.profile.image.url }}"
-                                                                                                         alt="user image"/>
+                                                                                                    {% if reply.user.profile.image %}
+                                                                                                        <img id="comment-user-img"
+                                                                                                             src="{{ reply.user.profile.image.url }}"
+                                                                                                             alt="user image"/>
+                                                                                                    {% else %}
+                                                                                                        <img id="comment-user-img"
+                                                                                                             src="{% static 'assets/imgs/profile/defult.jpg' %}"
+                                                                                                             alt="user image"/>
+                                                                                                    {% endif %}
                                                                                                     <a href=""
                                                                                                        class="font-heading text-brand"
-                                                                                                       id="comment-user-username">{{ request.user.username }}</a>
+                                                                                                       id="comment-user-username">{{ reply.user.username }}</a>
                                                                                                 </div>
                                                                                                 <div class="desc">
                                                                                                     <div class="d-flex justify-content-between mb-10">
@@ -640,12 +652,12 @@
                                         <h6>
                                             <a href="{% url 'home:vendor-detail' product.vendor.vid %}">{{ product.vendor.title }}</a>
                                         </h6>
-{#                                        <div class="product-rate-cover text-end">#}
-{#                                            <div class="product-rate d-inline-block">#}
-{#                                                <div class="product-rating" style="width: 90%"></div>#}
-{#                                            </div>#}
-{#                                            <span class="font-small ml-5 text-muted"> (32 reviews)</span>#}
-{#                                        </div>#}
+                                        {#                                        <div class="product-rate-cover text-end">#}
+                                        {#                                            <div class="product-rate d-inline-block">#}
+                                        {#                                                <div class="product-rating" style="width: 90%"></div>#}
+                                        {#                                            </div>#}
+                                        {#                                            <span class="font-small ml-5 text-muted"> (32 reviews)</span>#}
+                                        {#                                        </div>#}
                                     </div>
                                 </div>
                                 <ul class="contact-infor">
@@ -675,7 +687,7 @@
                                 <ul>
                                     <li class="hr"><span></span></li>
                                 </ul>
-{#                                <p>Become a Vendor? <a href="page-register.html"> Register now</a></p>#}
+                                {#                                <p>Become a Vendor? <a href="page-register.html"> Register now</a></p>#}
                             </div>
                             <div class="sidebar-widget widget-category-2 mb-30">
                                 <h5 class="section-title style-1 mb-30">Category</h5>
@@ -702,9 +714,9 @@
                                                 <a href="{% url 'home:product-detail' product.pid %}">{{ product.title }}</a>
                                             </h5>
                                             <p class="price mb-0 mt-5">${{ product.price }}</p>
-{#                                            <div class="product-rate">#}
-{#                                                <div class="product-rating" style="width: 90%"></div>#}
-{#                                            </div>#}
+                                            {#                                            <div class="product-rate">#}
+                                            {#                                                <div class="product-rating" style="width: 90%"></div>#}
+                                            {#                                            </div>#}
                                         </div>
                                     </div>
                                 {% endfor %}

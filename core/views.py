@@ -498,15 +498,8 @@ def add_new_review(request):
             rating=int(rating_value),
             review_status='in_review',
         )
-        review_date = review.date.date().strftime('%B %d, %Y')
-        review_time = review.date.time().strftime('%I:%M %p').lower().replace('m', '.m.')
         return JsonResponse({
             'boolean': 'true',
-            'image': user.profile.image.url,
-            'username': str(user.username),
-            'date': review_date,
-            'time': review_time,
-            'review': str(review.review),
         })
 
 
@@ -526,14 +519,6 @@ def add_new_reply(request):
             user=user,
             review_status='in_review',
         )
-        review_date = review.date.date().strftime('%B %d, %Y')
-        review_time = review.date.time().strftime('%I:%M %p').lower().replace('m', '.m.')
-
         return JsonResponse({
             'boolean': 'true',
-            'image': user.profile.image.url,
-            'username': str(user.username),
-            'date': review_date,
-            'time': review_time,
-            'review': str(review.review),
         })
