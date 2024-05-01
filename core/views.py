@@ -1,6 +1,6 @@
 from django.db.models.functions import ExtractMonth
 from django.http import JsonResponse
-from django.shortcuts import render, get_list_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -18,8 +18,7 @@ from userauths.models import User
 
 
 def home_view(request):
-    products = Product.objects.filter(product_status='published')
-    return render(request, 'core/index.html', {'products': products})
+    return render(request, 'core/index.html')
 
 
 def product_list_view(request):
@@ -45,32 +44,29 @@ def vendor_list_view(request):
 
 
 def vendor_detail_view(request, vid):
-    vendor = Vendor.objects.get(vid=vid)
+    vendor = get_object_or_404(Vendor, vid=vid)
     products = Product.objects.filter(product_status='published', vendor=vendor)
-    categories = Category.objects.all()
     return render(request, 'core/vendor-details.html',
-                  {'vendor': vendor, 'products': products, 'categories': categories})
+                  {'vendor': vendor, 'products': products, })
 
 
 def rating_to_width(avg_rating):
-    # Base widths for each star rating
-    widths = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
+    if not (1 <= avg_rating <= 5):
+        raise ValueError("Average rating must be between 1 and 5.")
 
-    # For decimal ratings, find the nearest lower whole number,
-    # and then interpolate the decimal part to get the correct width.
-    base_width = widths[int(avg_rating)]  # Width of the lower whole number
+    widths = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
+    base_width = widths[int(avg_rating)]
     decimal_part = avg_rating - int(avg_rating)
 
     if decimal_part == 0:
         return base_width
     else:
-        # Assuming each half star is worth 10% additional width
         additional_width = 10 if decimal_part <= 0.5 else 20
         return base_width + additional_width - (10 * (0.5 - decimal_part) if decimal_part < 0.5 else 0)
 
 
 def product_detail_view(request, pid):
-    product = Product.objects.get(pid=pid)
+    product = get_object_or_404(Product, pid=pid)
     product_images = product.images.all()
     related_products = Product.objects.filter(category=product.category).exclude(pid=pid)
     products = Product.objects.all().order_by('-date').exclude(pid=pid)

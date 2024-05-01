@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from userauths.models import *
@@ -70,11 +71,13 @@ def ajax_contact_us(request):
     })
 
 
+@login_required
 def edit_profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
-    except:
+    except Profile.DoesNotExist:
         profile = None
+
     if request.method == "POST":
         form = EditProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
@@ -88,10 +91,10 @@ def edit_profile(request):
     return render(request, 'userauths/edit-profile.html', {'form': form, 'profile': profile})
 
 
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form1 = ChangePasswordForm(request.POST)
-        email = request.user.email
         if form1.is_valid():
             user = request.user
             user.password = form1.cleaned_data.get('password1')
