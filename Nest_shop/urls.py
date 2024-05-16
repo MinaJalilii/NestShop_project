@@ -23,8 +23,7 @@ urlpatterns = [
     path("iViR0s08y6h{Q6[!Sxnw@(/", admin.site.urls),
     path("", include('core.urls')),
     path("", include('userauths.urls')),
-    path('api-auth/', include('rest_framework.urls')),
-    path("", include('api.urls')),
+    path("api/", include('api.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,16 +1,19 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenRefreshView
+
 from api.views import *
+from rest_framework import routers
 
-app_name = "api"
+app_name = 'api'
 
+router = routers.SimpleRouter()
+router.register(r'categories', CategoryViewSet, basename='categories')
+
+# urlpatterns = router.urls
 urlpatterns = [
-    path("api/product", ProductApiView.as_view(), name="product-api"),
-    path("api/product/<int:pk>", ProductDetailApiView.as_view(), name="product-detail-api"),
-    path("api/product/create", ProductCreateApiView.as_view(), name="product-create-api"),
-    path("api/user", UserApiView.as_view(), name="user-api"),
-    path("api/user/<int:pk>", UserDetailApiView.as_view(), name="user-detail-api"),
-    path("api/user/create", UserCreateApiView.as_view(), name="user-create-api"),
-    path("api/user/profile", ProfileApiView.as_view(), name="profile-api"),
-    path("api/user/profile/<int:pk>", ProfileDetailApiView.as_view(), name="profile-detail-api"),
-    path("api/user/profile/create", ProfileCreateApiView.as_view(), name="profile-create-api"),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', RegisterView.as_view(), name='auth_register'),
+    path('test/', test_end_point, name='test'),
+    path('', get_routes),
 ]
